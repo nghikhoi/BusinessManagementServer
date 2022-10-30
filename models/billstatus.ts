@@ -1,0 +1,7 @@
+export enum BillStatus {
+    WAITING = "WAITING",
+    PROCESSING = "PROCESSING",
+    TRANSPORTING = "TRANSPORTING",
+    COMPLETED = "COMPLETED",
+    CANCELED = "CANCELED"
+}
