@@ -1,3 +1,4 @@
+import { Gender } from './../models/employee';
 import {
     IsArray,
     IsBoolean,
@@ -11,7 +12,6 @@ import {
     IsString,
     Min
 } from "class-validator";
-import {Gender} from "../models/user";
 import {Column} from "typeorm";
 
 /**

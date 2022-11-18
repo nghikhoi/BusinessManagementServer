@@ -68,7 +68,7 @@ import {
  *          type: integer
  *          description: The number of users to return.
  */
-export class BookSearch {
+export class ProductSearch {
 
     @IsInt()
     @Min(0)
@@ -80,36 +80,27 @@ export class BookSearch {
 
 }
 
-abstract class BookCRUDRequest {
+abstract class ProductCRUDRequest {
 
     @IsString()
     description: string;
 
-    @IsString()
-    isbn: string;
-
     @IsDecimal()
     price: number;
 
-    @IsString()
-    author_id: string;
-
-    @IsString()
-    publisher_id: string;
-
 }
 
-export class BookCreateRequest extends BookCRUDRequest {
+export class ProductCreateRequest extends ProductCRUDRequest {
 
     @IsDefined()
     @IsString()
-    title: string;
+    name: string;
 
 }
 
-export class BookUpdateRequest extends BookCRUDRequest {
+export class ProductUpdateRequest extends ProductCRUDRequest {
 
     @IsString()
-    title: string;
+    name: string;
 
 }

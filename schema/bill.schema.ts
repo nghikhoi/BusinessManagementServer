@@ -1,3 +1,4 @@
+import { BillStatus } from './../models/bill';
 /**
  * @openapi
  * components:
@@ -46,7 +47,6 @@
  *          $ref: '#/components/schemas/BillDetail'
  */
 import {IsDefined, IsEnum} from "class-validator";
-import {BillStatus} from "../models/billstatus";
 
 class StatusUpdateRequest {
 

@@ -26,14 +26,6 @@ export class OvertimeRecord {
     @JoinColumn({ name: "employee_id" })
     employee: Employee;
 
-    @ManyToOne(type => SalaryRecord, salary_record => salary_record.overtime_records)
-    @JoinColumn([
-        { name: "employee_id", referencedColumnName: "employee_id" },
-        { name: "month", referencedColumnName: "month" },
-        { name: "year", referencedColumnName: "year" }
-    ])
-    salary_record: SalaryRecord;
-
 }
 
 @Entity()

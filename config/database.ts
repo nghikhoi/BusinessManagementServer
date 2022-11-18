@@ -1,9 +1,9 @@
-import { Product } from './../models/product';
+import { Product, ProductCategory } from './../models/product';
 import { Bill, BillDetail } from './../models/bill';
 import { Provider } from './../models/provider';
 import { Voucher } from './../models/voucher';
 import { Message, Feedback, ReplyFeedback } from './../models/message';
-import { Video, Other } from './../models/file';
+import { Audio, Image, Document, Video, Other } from './../models/file';
 import { Permission } from './../models/permission';
 import { Department } from './../models/department';
 import { Contract } from './../models/contract';
@@ -117,17 +117,18 @@ export const AppDataSource = new DataSource({
         Permission,
         Position,
         Skill,
-        OvertimeRecord,
-        SalaryRecord,
         Contract,
 
         Provider,
+        ProductCategory,
         Product,
         BillDetail,
         Bill,
 
         Employee,
         EmployeeSkill,
+        OvertimeRecord,
+        SalaryRecord,
         Customer,
         Department,
 

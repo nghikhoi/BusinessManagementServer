@@ -35,10 +35,10 @@ const RunApp = async () => {
 
     //region ORM - Database
     const AppDataSource = require('./config/database').AppDataSource;
-    const { InitSamples } = require('./models/samples');
+    // const { InitSamples } = require('./models/samples');
 
     await AppDataSource.initialize();
-    await InitSamples();
+    // await InitSamples();
     //endregion
 
     //region Routes
