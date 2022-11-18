@@ -3,7 +3,7 @@ const {VoucherController} = require("../../controllers/voucher.controller");
 const router = require('express').Router();
 
 router.get('/profile/:profile_id', VoucherController.getProfile)
-router.get('/profiles', VoucherController.getProfiles);
+router.get('/profiles', VoucherController.getVouchers);
 
 router.get('/voucher/:voucher_id', VoucherController.getVoucher);
 

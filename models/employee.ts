@@ -1,8 +1,17 @@
+import { SalaryRecord, OvertimeRecord } from './salary';
 import { Position } from './position';
 import { Skill } from './skill';
 import { Contract } from './contract';
-import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
-import { Department, OvertimeRecord } from './department';
+import { AfterLoad, BeforeInsert, BeforeUpdate, Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Department } from './department';
+import { randomBytes } from 'crypto';
+import { hashSync } from '../routes/auth/auth.methods';
+
+export enum Gender {
+    MALE = 'male',
+    FEMALE = 'female',
+    OTHER = 'other'
+}
 
 @Entity()
 export class Employee {
@@ -10,7 +19,51 @@ export class Employee {
     @PrimaryGeneratedColumn("uuid")
     id: string;
 
-    @Column()
+    @Column({
+        nullable: false,
+        update: false,
+        unique: true,
+    })
+    username: string;
+
+    @Column({
+        nullable: false,
+        select: false,
+    })
+    password: string
+
+    private tempPassword: string;
+
+    @AfterLoad()
+    private loadTempPassword(): void {
+        this.tempPassword = this.password;
+    }
+
+    @BeforeInsert()
+    @BeforeUpdate()
+    private encryptPassword(): void {
+        if (!this.salt) {
+            this.salt = randomBytes(16).toString('base64');
+        }
+        if (this.tempPassword !== this.password) {
+            this.password = this.tempPassword = hashSync(this.password, this.salt).toString('base64');
+        }
+    }
+
+    @Column({
+        nullable: true,
+        select: false
+    })
+    salt: string
+
+    @Column({
+        nullable: true
+    })
+    refresh_token: string
+
+    @Column({
+        nullable: true
+    })
     name: string;
 
     @Column()
@@ -19,13 +72,32 @@ export class Employee {
     @Column()
     phone: string;
 
-    @Column()
+    @Column({
+        nullable: true
+    })
     address: string;
 
-    @Column()
+    @Column({
+        type: "enum",
+        enum: Gender,
+        default: Gender.OTHER,
+        nullable: false
+    })
+    gender: Gender
+
+    @Column({
+        nullable: true
+    })
+    birthday: Date
+
+    @Column({
+        nullable: true
+    })
     citizen_id: string;
 
-    @Column()
+    @Column({
+        nullable: true
+    })
     position_id: string;
 
     @ManyToOne(type => Position, position => position.employees)
@@ -40,6 +112,9 @@ export class Employee {
 
     @OneToMany(type => EmployeeSkill, skill => skill.employee)
     skills: EmployeeSkill[];
+
+    @OneToMany(type => SalaryRecord, salary_record => salary_record.employee)
+    salary_records: SalaryRecord[];
 
     @OneToMany(type => OvertimeRecord, overtime_record => overtime_record.employee)
     overtime_records: OvertimeRecord[];

@@ -1,3 +1,4 @@
+import { Voucher } from './voucher';
 import { Message, Feedback } from './message';
 import { Column, Entity, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Provider } from './provider';
@@ -29,7 +30,9 @@ export class Product {
     @Column()
     name: string;
 
-    @Column()
+    @Column({
+        nullable: true
+    })
     description: string;
 
     @Column()
@@ -52,5 +55,8 @@ export class Product {
 
     @OneToMany(type => Feedback, feedback => feedback.product)
     feedbacks: Feedback[];
+
+    @ManyToMany(type => Voucher, voucher_profile => voucher_profile.require_product)
+    required_vouchers: Voucher[];
 
 }

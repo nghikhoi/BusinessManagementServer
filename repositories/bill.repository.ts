@@ -1,11 +1,8 @@
+import { BillStatus, BillDetail } from './../models/bill';
 import {AppDataSource} from "../config/database";
 import {Bill} from "../models/bill";
-import {CartItemRepository} from "./caritem.repository";
-import {CartItem} from "../models/cartitem";
-import {BillStatus} from "../models/billstatus";
-import {BillDetail} from "../models/billdetail";
 import {SelectQueryBuilder} from "typeorm";
-import {BookRepository} from "./book.repository";
+import {ProductRepository} from "./product.repository";
 
 export const BillDetailRepository = AppDataSource.getRepository(BillDetail);
 
@@ -31,23 +28,19 @@ export const BillRepository = AppDataSource.getRepository(Bill).extend({
         });
 
         bill.bill_details = await Promise.all(items.map(async item => {
-            const book = item.book != null ? item.book : await BookRepository.findOne({
+            const book = item.book != null ? item.book : await ProductRepository.findOne({
                 where: {
-                    id: item.book_id
+                    id: item.product_id
                 }
             });
             return BillDetailRepository.create({
                 bill_id: bill.id,
-                book_id: item.book_id,
+                product_id: item.product_id,
                 quantity: item.quantity,
                 unit_price: book.price
             });
         }));
 
         return bill;
-    },
-    async createFromCart(user_id: string) {
-        const items: CartItem[] = await CartItemRepository.findByUser(user_id, true);
-        return this.createFrom(user_id, items);
     }
 });

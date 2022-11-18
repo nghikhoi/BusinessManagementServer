@@ -1,6 +1,5 @@
 import {ChildEntity, Column, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn, TableInheritance} from "typeorm";
 import {Message} from "./message";
-import {Transporter} from "./transporter";
 import {Provider} from "./provider";
 
 export abstract class File {

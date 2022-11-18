@@ -1,25 +1,25 @@
 import {NextFunction, Request, Response} from "express"
-import {PublisherRepository} from "../repositories/publisher.repository";
+import {ProviderRepository} from "../repositories/provider.repository";
 
-export class PublisherController {
+export class ProviderController {
 
     static async all(req: Request, res: Response, next: NextFunction) {
-        return res.json(await PublisherRepository.search(req.query.select as any, req.query.skip as any, req.query.limit as any));
+        return res.json(await ProviderRepository.search(req.query.select as any, req.query.skip as any, req.query.limit as any));
     }
 
     static async one(req: Request, res: Response, next: NextFunction) {
-        return res.json(await PublisherRepository.findOneBy({
+        return res.json(await ProviderRepository.findOneBy({
             id: +req.params.id
         }));
     }
 
     static async create(req: Request, res: Response, next: NextFunction) {
-        const publisher = PublisherRepository.create(req.body);
-        return res.json(await PublisherRepository.save(publisher));
+        const publisher = ProviderRepository.create(req.body);
+        return res.json(await ProviderRepository.save(publisher));
     }
 
     static async update(req: Request, res: Response, next: NextFunction) {
-        const publisher = await PublisherRepository.findOneBy({
+        const publisher = await ProviderRepository.findOneBy({
             id: +req.params.id
         });
         if (!publisher) {
@@ -27,12 +27,12 @@ export class PublisherController {
                 message: "Author not found"
             });
         }
-        PublisherRepository.merge(publisher, req.body);
-        return res.json(await PublisherRepository.save(publisher));
+        ProviderRepository.merge(publisher, req.body);
+        return res.json(await ProviderRepository.save(publisher));
     }
 
     static async delete(req: Request, res: Response, next: NextFunction) {
-        const publisher = await PublisherRepository.findOneBy({
+        const publisher = await ProviderRepository.findOneBy({
             id: +req.params.id
         });
         if (!publisher) {
@@ -40,7 +40,7 @@ export class PublisherController {
                 message: "Author not found"
             });
         }
-        await PublisherRepository.delete({
+        await ProviderRepository.delete({
             id: +req.params.id
         });
         return res.status(204).json();

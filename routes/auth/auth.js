@@ -10,12 +10,11 @@ const authMethods = require('./auth.methods');
 const randToken = require('rand-token');
 
 const routeVariable = require('../../variables/routes.variable');
-const {UserRepository} = require("../../repositories/user.repository");
-const {UserController} = require("../../controllers/user.controller");
+const { EmployeeRepository } = require('../../repositories/employee.repository');
+const {EmployeeController} = require("../../controllers/employee.controller");
 const {bodyFilter} = require('../../controllers/helper');
 
 const AppDataSource = require('../../config/database').AppDataSource;
-const User = require('../../models/user').User;
 
 passport.use('local', strategy.Local);
 passport.use('jwt', strategy.Jwt);
@@ -30,7 +29,7 @@ router.post('/login', verifyUserLocal, async (req, res) => {
     const accessTokenSecret = jwtVariable.accessTokenSecret;
 
     const dataForAccessToken = {
-        user: bodyFilter(user, ['id', 'username', 'email', 'role']),
+        user: bodyFilter(user, ['id', 'username', 'email']),
     };
     const accessToken = await authMethods.generateToken(
       dataForAccessToken,
@@ -47,7 +46,7 @@ router.post('/login', verifyUserLocal, async (req, res) => {
     if (!user.refresh_token) {
         refreshToken = randToken.generate(jwtVariable.refreshTokenSize);
         user.refresh_token = refreshToken;
-        await UserRepository.save(user);
+        await EmployeeRepository.save(user);
     } else {
         refreshToken = user.refresh_token;
     }
@@ -68,7 +67,7 @@ router.get('/verify', verifyToken, (req, res) => {
     });
 });
 
-router.post('/signup', UserController.register);
-router.post('/changepassword/:user_id?', UserController.changePassword);
+router.post('/signup', EmployeeController.register);
+router.post('/changepassword/:user_id?', EmployeeController.changePassword);
 
 module.exports = router;

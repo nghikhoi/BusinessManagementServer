@@ -13,7 +13,7 @@ import {
     PrimaryColumn,
     PrimaryGeneratedColumn
 } from "typeorm";
-import {VoucherProfile} from "./voucher";
+import {Voucher} from "./voucher";
 
 export enum Payment {
 
@@ -99,7 +99,7 @@ export class Bill {
     })
     bank_id: number
 
-    @ManyToMany(type => VoucherProfile, voucherProfile => voucherProfile.used_on_bill, {
+    @ManyToMany(type => Voucher, voucherProfile => voucherProfile.used_on_bill, {
         cascade: true
     })
     @JoinTable({
@@ -113,7 +113,7 @@ export class Bill {
             referencedColumnName: "id"
         }
     })
-    used_vouchers: VoucherProfile[];
+    used_vouchers: Voucher[];
 
 }
 
@@ -124,7 +124,7 @@ export class BillDetail {
     bill_id: number;
 
     @PrimaryColumn()
-    book_id: string;
+    product_id: number;
 
     @ManyToOne(() => Product, product => product.bill_details)
     @JoinColumn({name: "product_id"})

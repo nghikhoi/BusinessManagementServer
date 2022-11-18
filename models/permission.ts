@@ -10,19 +10,27 @@ export class Permission {
     @Column()
     name: string;
 
-    @Column()
+    @Column({
+        nullable: true
+    })
     description: string;
 
     @Column()
-    data_type: number;
+    data_type: number = 0;
 
-    @Column()
+    @Column({
+        nullable: true
+    })
     data_string: string;
 
-    @Column()
+    @Column({
+        nullable: true
+    })
     data_number: number;
 
-    @Column()
+    @Column({
+        nullable: true
+    })
     data_boolean: boolean;
 
     @ManyToOne(type => Position, position => position.permissions)

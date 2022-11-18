@@ -1,3 +1,4 @@
+import { Product } from './product';
 import {
     ChildEntity,
     Column,
@@ -16,7 +17,7 @@ export enum DiscountType {
 }
 
 @Entity()
-export class VoucherProfile {
+export class Voucher {
 
     @PrimaryGeneratedColumn("uuid")
     id: string;
@@ -45,31 +46,19 @@ export class VoucherProfile {
     )
     discount: number;
 
-    @OneToMany(type => Voucher, voucher => voucher.profile)
-    vouchers: Voucher[]
-
-    @OneToMany(type => WildVoucher, voucher => voucher.profile)
-    wild_vouchers: WildVoucher[]
+    @ManyToMany(type => Product, product => product.required_vouchers)
+    @JoinTable()
+    require_product: Product[];
 
     @Column({
         nullable: true
     })
-    require_book_count: number;
+    require_product_count: number;
 
     @Column({
         nullable: true
     })
     require_min_value: number;
-
-    @ManyToMany(type => Bill, bill => bill.used_vouchers)
-    used_on_bill: Bill[]
-
-}
-
-abstract class BaseVoucher {
-
-    @PrimaryGeneratedColumn("uuid")
-    id: string;
 
     @Column()
     code: string;
@@ -80,45 +69,7 @@ abstract class BaseVoucher {
     @Column()
     expire_date: Date;
 
-    @Column()
-    profile_id: string;
-
-}
-
-@Entity()
-export class Voucher extends BaseVoucher {
-
-    @Column()
-    user_id: string;
-
-    @ManyToOne(type => User, user => user.vouchers)
-    @JoinColumn({name: 'user_id'})
-    user: User;
-
-    @ManyToOne(type => VoucherProfile, voucherProfile => voucherProfile.vouchers, {
-        eager: true
-    })
-    @JoinColumn({name: 'profile_id'})
-    profile: VoucherProfile;
-
-    @Column({
-        nullable: true
-    })
-    used_at: Date;
-
-}
-
-@Entity()
-export class WildVoucher extends BaseVoucher {
-
-    @Column()
-    remaining_uses: number;
-
-    @Column()
-    max_uses: number;
-
-    @ManyToOne(type => VoucherProfile, voucherProfile => voucherProfile.wild_vouchers)
-    @JoinColumn({name: 'profile_id'})
-    profile: VoucherProfile;
+    @ManyToMany(type => Bill, bill => bill.used_vouchers)
+    used_on_bill: Bill[]
 
 }

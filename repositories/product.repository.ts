@@ -1,14 +1,14 @@
 import {AppDataSource} from "../config/database";
-import {Book} from "../models/book";
+import {Product} from "../models/product";
 import {SelectQueryBuilder} from "typeorm";
 import {Image} from "../models/file";
 import Fuse from "fuse.js";
 
-export const BookRepository = AppDataSource.getRepository(Book).extend({
+export const ProductRepository = AppDataSource.getRepository(Product).extend({
     async search(select?: string[], skip?: number, limit?: number, search?: string, search_by?: string, decorator?: Function) {
-        let query: SelectQueryBuilder<Book> = this.createQueryBuilder("book");
+        let query: SelectQueryBuilder<Product> = this.createQueryBuilder("product");
         if (select) {
-            query = query.select(select.map(item => "book." + item));
+            query = query.select(select.map(item => "product." + item));
         }
         if (skip) {
             query = query.skip(skip)
@@ -17,9 +17,9 @@ export const BookRepository = AppDataSource.getRepository(Book).extend({
             query = query.limit(limit)
         }
         const temp = decorator ? decorator(query) : query;
-        const result = temp.leftJoinAndSelect("book.images", "images").getMany();
+        const result = temp.leftJoinAndSelect("product.images", "images").getMany();
         if (search) {
-            const search_key = !search_by ? "title" : search_by;
+            const search_key = !search_by ? "name" : search_by;
 
             const options = {
                 includeScore: true,
@@ -33,18 +33,18 @@ export const BookRepository = AppDataSource.getRepository(Book).extend({
         }
         return result;
     },
-    increaseQuantity(book_id: string, quantity: number) {
-        return this.createQueryBuilder("book")
+    increaseQuantity(product_id: string, quantity: number) {
+        return this.createQueryBuilder("product")
             .update()
             .set({ quantity: () => `quantity + ${quantity}` })
-            .where("book.id = :id", {id: book_id})
+            .where("product.id = :id", {id: product_id})
             .execute();
     },
-    decreaseQuantity(book_id: string, quantity: number) {
-        return this.createQueryBuilder("book")
+    decreaseQuantity(product_id: string, quantity: number) {
+        return this.createQueryBuilder("product")
             .update()
             .set({ quantity: () => `quantity - ${quantity}` })
-            .where("book.id = :id", {id: book_id})
+            .where("product.id = :id", {id: product_id})
             .execute();
     }
 });

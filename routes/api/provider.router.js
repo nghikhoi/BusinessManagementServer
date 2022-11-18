@@ -1,17 +1,17 @@
-const {TransporterController} = require("../../controllers/transporter.controller");
+const {ProviderController} = require("../../controllers/provider.controller");
 const router = require("express").Router();
 
 /**
  * @openapi
- * '/api/transporter/{id}':
+ * '/api/publisher/{id}':
  *  get:
  *     tags:
- *     - Transporter
- *     summary: Get transporter by id
+ *     - Publisher
+ *     summary: Get publisher by id
  *     parameters:
  *     - in: path
  *       name: id
- *       description: Transporter id
+ *       description: Publisher id
  *       required: true
  *       type: string
  *     responses:
@@ -22,55 +22,55 @@ const router = require("express").Router();
  *            content:
  *              type: array
  *              schema:
- *                $ref: '#/components/schemas/Transporter'
+ *                $ref: '#/components/schemas/Publisher'
  *      409:
  *        description: Conflict
  *      400:
  *        description: Bad request
  */
-router.get('/:id', TransporterController.one);
+router.get('/:id', ProviderController.one);
 /**
  * @openapi
- * '/api/transporter/{id}':
+ * '/api/publisher/{id}':
  *  post:
  *     tags:
- *     - Transporter
- *     summary: Update an transporter
+ *     - Publisher
+ *     summary: Update an publisher
  *     parameters:
  *     - in: path
  *       name: id
- *       description: transporter id
+ *       description: publisher id
  *       required: true
  *       type: string
  *     requestBody:
  *      content:
  *        application/json:
  *          schema:
- *            $ref: '#/components/schemas/TransporterUpdateRequest'
+ *            $ref: '#/components/schemas/PublisherUpdateRequest'
  *     responses:
  *      200:
  *        description: Success
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/Transporter'
+ *              $ref: '#/components/schemas/Publisher'
  *      409:
  *        description: Conflict
  *      400:
  *        description: Bad request
  */
-router.put('/:id', TransporterController.update);
+router.put('/:id', ProviderController.update);
 /**
  * @openapi
- * '/api/transporter/{id}':
+ * '/api/publisher/{id}':
  *  delete:
  *     tags:
- *     - Transporter
- *     summary: Delete an transporter
+ *     - Publisher
+ *     summary: Delete an publisher
  *     parameters:
  *     - name: id
  *       in: path
- *       description: id of transporter
+ *       description: id of publisher
  *       required: true
  *     responses:
  *      200:
@@ -80,15 +80,15 @@ router.put('/:id', TransporterController.update);
  *      400:
  *        description: Bad request
  */
-router.delete('/:id', TransporterController.delete);
+router.delete('/:id', ProviderController.delete);
 
 /**
  * @openapi
- * '/api/transporter':
+ * '/api/publisher':
  *  get:
  *     tags:
- *     - Transporter
- *     summary: Get transporters
+ *     - Publisher
+ *     summary: Get publishers
  *     responses:
  *      200:
  *        description: Success
@@ -97,37 +97,37 @@ router.delete('/:id', TransporterController.delete);
  *            content:
  *              type: array
  *              schema:
- *                $ref: '#/components/schemas/Transporter'
+ *                $ref: '#/components/schemas/Publisher'
  *      409:
  *        description: Conflict
  *      400:
  *        description: Bad request
  */
-router.get('/', TransporterController.all);
+router.get('/', ProviderController.all);
 /**
  * @openapi
- * '/api/transporter':
+ * '/api/publisher':
  *  post:
  *     tags:
- *     - Transporter
- *     summary: Create transporter
+ *     - Publisher
+ *     summary: Create publisher
  *     requestBody:
  *      content:
  *        application/json:
  *          schema:
- *            $ref: '#/components/schemas/TransporterUpdateRequest'
+ *            $ref: '#/components/schemas/PublisherUpdateRequest'
  *     responses:
  *      200:
  *        description: Success
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/Transporter'
+ *              $ref: '#/components/schemas/Publisher'
  *      409:
  *        description: Conflict
  *      400:
  *        description: Bad request
  */
-router.post('/', TransporterController.create);
+router.post('/', ProviderController.create);
 
 module.exports = router;

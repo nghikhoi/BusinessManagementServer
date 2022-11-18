@@ -1,12 +1,12 @@
+import { Provider } from '../models/provider';
 import {AppDataSource} from "../config/database";
-import {Publisher} from "../models/provider";
 import {SelectQueryBuilder} from "typeorm";
 
-export const PublisherRepository = AppDataSource.getRepository(Publisher).extend({
+export const ProviderRepository = AppDataSource.getRepository(Provider).extend({
     search(select?: string[], skip?: number, limit?: number, decorator?: Function) {
-        const query: SelectQueryBuilder<Publisher> = this.createQueryBuilder("publisher");
+        const query: SelectQueryBuilder<Provider> = this.createQueryBuilder("provider");
         if (select) {
-            query.select(select.map(item => "publisher." + item));
+            query.select(select.map(item => "provider." + item));
         }
         if (skip) {
             query.skip(skip)

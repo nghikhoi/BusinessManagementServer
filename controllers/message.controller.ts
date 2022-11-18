@@ -1,14 +1,13 @@
 import {NextFunction, Request, Response} from "express"
 import {FeedbackRepository, MessageRepository, ReplyFeedbackRepository} from "../repositories/feedback.repository";
 import {ImageRepository, VideoRepository} from "../repositories/file.repository";
-import {ReplyFeedback} from "../models/message";
 
 export class MessageController {
 
     static async getFeedback(req: Request, res: Response, next: NextFunction) {
         return res.json(await FeedbackRepository.find({
             where: {
-                book_id: req.params.book_id
+                product_id: req.params.product_id
             }
         }));
     }
@@ -20,7 +19,7 @@ export class MessageController {
     static async addFeedback(req: Request, res: Response, next: NextFunction) {
         const feedback = FeedbackRepository.create({
             user_id: req["user"]["id"],
-            book_id: req.params.book_id,
+            product_id: req.params.product_id,
             rating: req.body.rating,
             text: req.body.text,
         });

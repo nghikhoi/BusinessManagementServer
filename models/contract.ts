@@ -1,6 +1,12 @@
 import { Employee } from './employee';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
+export enum ContractType {
+
+    INTERN, ONE_YEAR, THREE_YEARS, LONG_TIME
+
+}
+
 @Entity()
 export class Contract {
 
@@ -10,8 +16,17 @@ export class Contract {
     @Column()
     name: string;
 
-    @Column()
+    @Column({
+        nullable: true
+    })
     description: string;
+
+    @Column({
+        type: "enum",
+        enum: ContractType,
+        default: ContractType.INTERN
+    })
+    type: ContractType;
 
     @Column()
     start_date: Date;
@@ -23,10 +38,10 @@ export class Contract {
     salary: number;
 
     @Column()
-    bonus: number;
+    bonus: number = 0;
 
     @Column()
-    status: number;
+    status: number = 0;
 
     @ManyToOne(type => Employee, employee => employee.contracts)
     employee: Employee;

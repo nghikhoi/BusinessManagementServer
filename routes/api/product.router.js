@@ -1,16 +1,14 @@
-const {BookController} = require('../../controllers/book.controller');
+const {ProductController} = require('../../controllers/product.controller');
 const router = require('express').Router();
-
-router.get('/feedback/:book_id', BookController.getFeedback);
 /**
  * @openapi
- * '/api/book/info/{book_id}':
+ * '/api/book/info/{product_id}':
  *  get:
  *     tags:
  *     - Book
  *     summary: Get book info
  *     parameters:
- *     - name: book_id
+ *     - name: product_id
  *       type: string
  *       in: path
  *       description: book id
@@ -26,7 +24,7 @@ router.get('/feedback/:book_id', BookController.getFeedback);
  *      400:
  *        description: Bad request
  */
-router.get('/info/:book_id', BookController.getBook);
+router.get('/info/:product_id', ProductController.getProduct);
 /**
  * @openapi
  * '/api/book/search':
@@ -53,10 +51,10 @@ router.get('/info/:book_id', BookController.getBook);
  *      400:
  *        description: Bad request
  */
-router.get('/search', BookController.search);
+router.get('/search', ProductController.search);
 
-router.post('/:book_id?', BookController.createOrUpdate); //TODO: create or update
-router.delete('/:book_id', BookController.delete); //TODO: delete
+router.post('/:product_id?', ProductController.createOrUpdate); //TODO: create or update
+router.delete('/:product_id', ProductController.delete); //TODO: delete
 
 module.exports = router;
 
