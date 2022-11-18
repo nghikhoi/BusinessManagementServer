@@ -16,7 +16,7 @@ import {Author} from "../models/author";
 import {Bill} from "../models/bill";
 import {Book, FavouriteBook, RecentBook} from "../models/book";
 import {CartItem} from "../models/cartitem";
-import {Publisher} from "../models/publisher";
+import {Publisher} from "../models/provider";
 import {Transporter} from "../models/transporter";
 import {Transport} from "../models/transport";
 import {Audio, Document, File, Image, Media, Other, Video} from "../models/file";

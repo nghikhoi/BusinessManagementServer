@@ -1,9 +1,9 @@
-import {Entity, PrimaryGeneratedColumn, Column, OneToMany, OneToOne, JoinColumn, CreateDateColumn} from "typeorm";
-import {Book} from "./book";
-import {Image} from "./file";
+import { Product } from './product';
+import { Column, CreateDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Image } from "./file";
 
 @Entity()
-export class Publisher {
+export class Provider {
 
     @PrimaryGeneratedColumn()
     id: number;
@@ -18,15 +18,15 @@ export class Publisher {
     })
     description: string;
 
-    @OneToMany(() => Book, book => book.publisher)
-    books: Book[];
+    @OneToMany(() => Product, product => product.provider)
+    products: Product[];
 
     @Column({
         nullable: true
     })
     avatar_id: string
 
-    @OneToOne(type => Image, image => image.publisher)
+    @OneToOne(type => Image, image => image.provider)
     @JoinColumn({name: 'avatar_id'})
     avatar: Image
 

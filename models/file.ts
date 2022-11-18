@@ -1,10 +1,7 @@
 import {ChildEntity, Column, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn, TableInheritance} from "typeorm";
-import {Book} from "./book";
 import {Message} from "./message";
-import {User} from "./user";
 import {Transporter} from "./transporter";
-import {Publisher} from "./publisher";
-import {Author} from "./author";
+import {Provider} from "./provider";
 
 export abstract class File {
     @PrimaryGeneratedColumn("uuid")
@@ -44,32 +41,17 @@ export class Image extends Media {
     })
     mimetype: string;
 
-    @ManyToOne(type => Book, book => book.images)
-    book: Book;
-
     @ManyToOne(type => Message, message => message.images)
     message: Message;
 
-    @OneToOne(type => User, user => user.avatar)
-    user: User;
-
-    @OneToOne(type => Author, user => user.avatar)
-    author: User;
-
-    @OneToOne(type => Publisher, user => user.avatar)
-    publisher: User;
-
-    @OneToOne(type => Transporter, user => user.avatar)
-    transporter: User;
+    @OneToOne(type => Provider, provider => provider.avatar)
+    provider: Provider;
 }
 
 @Entity()
 export class Video extends Media {
     @Column()
     duration: number;
-
-    @ManyToOne(type => Book, book => book.videos)
-    book: Book;
 
     @ManyToOne(type => Message, message => message.videos)
     message: Message;

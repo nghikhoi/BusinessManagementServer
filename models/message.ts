@@ -1,3 +1,5 @@
+import { Product } from './product';
+import { Customer } from './customer';
 import {
     ChildEntity,
     Column, CreateDateColumn,
@@ -8,9 +10,7 @@ import {
     PrimaryGeneratedColumn,
     TableInheritance
 } from "typeorm";
-import {User} from "./user";
 import {Image, Video} from "./file";
-import {Book} from "./book";
 
 @Entity()
 @TableInheritance({column: {type: "varchar", name: "type"}})
@@ -22,9 +22,9 @@ export class Message {
     @Column()
     user_id: string;
 
-    @ManyToOne(type => User, user => user.messages)
+    @ManyToOne(type => Customer, user => user.messages)
     @JoinColumn({name: 'user_id'})
-    user: User;
+    customer: Customer;
 
     @Column({
         nullable: true
@@ -58,11 +58,11 @@ export class Feedback extends Message {
     replies: ReplyFeedback[]
 
     @Column()
-    book_id: string;
+    product_id: string;
 
-    @ManyToOne(type => Book, book => book.feedbacks)
-    @JoinColumn({name: 'book_id'})
-    book: Book
+    @ManyToOne(type => Product, product => product.feedbacks)
+    @JoinColumn({name: 'product_id'})
+    product: Product
 
     @Column({
         type: "double"

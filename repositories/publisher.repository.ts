@@ -1,5 +1,5 @@
 import {AppDataSource} from "../config/database";
-import {Publisher} from "../models/publisher";
+import {Publisher} from "../models/provider";
 import {SelectQueryBuilder} from "typeorm";
 
 export const PublisherRepository = AppDataSource.getRepository(Publisher).extend({

@@ -8,10 +8,7 @@ import {
     PrimaryGeneratedColumn,
     TableInheritance
 } from "typeorm";
-import {BookTag} from "./booktag";
-import {User} from "./user";
 import {Bill} from "./bill";
-import {type} from "os";
 
 export enum DiscountType {
     PERCENTAGE = 'PERCENTAGE',
@@ -53,13 +50,6 @@ export class VoucherProfile {
 
     @OneToMany(type => WildVoucher, voucher => voucher.profile)
     wild_vouchers: WildVoucher[]
-
-    @Column({
-        type: "set",
-        enum: BookTag,
-        nullable: true
-    })
-    require_book_tags: BookTag[]
 
     @Column({
         nullable: true

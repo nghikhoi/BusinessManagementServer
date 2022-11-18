@@ -1,3 +1,5 @@
+import { Product } from './product';
+import { Customer } from './customer';
 import {
     AfterLoad,
     Column, CreateDateColumn,
@@ -8,12 +10,9 @@ import {
     ManyToOne,
     OneToMany,
     OneToOne,
+    PrimaryColumn,
     PrimaryGeneratedColumn
 } from "typeorm";
-import {Transport} from "./transport";
-import {User} from "./user";
-import {BillStatus} from "./billstatus";
-import {BillDetail} from "./billdetail";
 import {VoucherProfile} from "./voucher";
 
 export enum Payment {
@@ -31,6 +30,14 @@ export enum Payment {
 
 }
 
+export enum BillStatus {
+    WAITING = "WAITING",
+    PROCESSING = "PROCESSING",
+    TRANSPORTING = "TRANSPORTING",
+    COMPLETED = "COMPLETED",
+    CANCELED = "CANCELED"
+}
+
 @Entity()
 export class Bill {
 
@@ -45,20 +52,6 @@ export class Bill {
     @CreateDateColumn()
     created_at: Date;
 
-    @OneToOne(type => Transport, transport => transport.bill, {
-        eager: true
-    })
-    @JoinColumn({name: 'transport_id'})
-    transport: Transport
-
-    ship_cost: number = 0
-
-    @AfterLoad()
-    updateShipCost() {
-        if (this.transport)
-            this.ship_cost = this.transport.ship_cost;
-    }
-
     @Column()
     user_id: string;
 
@@ -67,9 +60,9 @@ export class Bill {
     })
     address_id: number;
 
-    @ManyToOne(type => User, user => user.bills)
-    @JoinColumn({name: 'user_id'})
-    user: User
+    @ManyToOne(type => Customer, customer => customer.bills)
+    @JoinColumn({name: 'customer_id'})
+    customer: Customer
 
     @Column({
         type: "enum",
@@ -122,18 +115,35 @@ export class Bill {
     })
     used_vouchers: VoucherProfile[];
 
-    total_discount: number;
-    @AfterLoad()
-    updateDiscount() {
-        //TODO:
-    }
+}
 
-    //TODO: useraddress voucherProfile payment
-    /*
-    @Expose
-    @Getter
-    @SerializedName("voucher_profile")
-    private VoucherProfile voucherProfile;
-*/
+@Entity()
+export class BillDetail {
+
+    @PrimaryColumn()
+    bill_id: number;
+
+    @PrimaryColumn()
+    book_id: string;
+
+    @ManyToOne(() => Product, product => product.bill_details)
+    @JoinColumn({name: "product_id"})
+    product: Product;
+
+    @Column({
+        type: "decimal"
+    })
+    unit_price: number;
+
+    @Column({
+        default: 1
+    })
+    quantity: number;
+
+    @ManyToOne(type => Bill, bill => bill.bill_details)
+    @JoinColumn({
+        name: "bill_id"
+    })
+    bill: Bill
 
 }
