@@ -1,8 +1,11 @@
+import { ProductCategory } from './../models/product';
 import {AppDataSource} from "../config/database";
 import {Product} from "../models/product";
 import {SelectQueryBuilder} from "typeorm";
 import {Image} from "../models/file";
 import Fuse from "fuse.js";
+
+export const ProductCategoryRepository = AppDataSource.getRepository(ProductCategory);
 
 export const ProductRepository = AppDataSource.getRepository(Product).extend({
     async search(select?: string[], skip?: number, limit?: number, search?: string, search_by?: string, decorator?: Function) {

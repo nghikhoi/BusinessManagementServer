@@ -107,7 +107,13 @@ export class Employee {
     @OneToMany(type => Contract, contract => contract.employee)
     contracts: Contract[];
 
+    @Column({
+        nullable: true
+    })
+    department_id: string;
+
     @ManyToOne(type => Department, department => department.employees)
+    @JoinColumn({name: 'department_id'})
     department: Department;
 
     @OneToMany(type => EmployeeSkill, skill => skill.employee)

@@ -1,4 +1,4 @@
-import { Employee } from './../models/employee';
+import { Employee, EmployeeSkill } from './../models/employee';
 import {AppDataSource} from "../config/database";
 import {SelectQueryBuilder} from "typeorm";
 import Fuse from "fuse.js";
@@ -73,3 +73,5 @@ export const EmployeeRepository = AppDataSource.getRepository(Employee).extend({
         return query.getOne();
     }
 })
+
+export const EmployeeSkillRepository = AppDataSource.getRepository(EmployeeSkill)

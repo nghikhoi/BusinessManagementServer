@@ -5,6 +5,16 @@ import { passwordVerify } from "../routes/auth/auth.methods";
 
 export class EmployeeController {
 
+    static async getAll(request: Request, response: Response, next: NextFunction) {
+        return response.json(await EmployeeRepository.find());
+    }
+
+    static async getAllByDepartment(request: Request, response: Response, next: NextFunction) {
+        return response.json(await EmployeeRepository.findBy({
+            department_id: request.params.department_id
+        }));
+    }
+
     static async getUser(request: Request, response: Response, next: NextFunction) {
         return response.json(await EmployeeRepository.findOneBy({
             id: request.params.user_id
