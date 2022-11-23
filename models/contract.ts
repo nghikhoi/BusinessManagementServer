@@ -3,7 +3,7 @@ import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 export enum ContractType {
 
-    INTERN, ONE_YEAR, THREE_YEARS, LONG_TIME
+    INTERN, ONE_YEAR, THREE_YEARS, PERMNANENT
 
 }
 

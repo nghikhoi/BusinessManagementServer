@@ -5,7 +5,7 @@ import Fuse from "fuse.js";
 
 export const IdentifyProperties = [
     'id',
-    'employeename',
+    'username',
     'email'
 ];
 
@@ -22,7 +22,6 @@ export const ProfileProperties = [
 export const AuthProperties = [
     'salt',
     'password',
-    'role',
     'refresh_token'
 ]
 

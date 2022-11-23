@@ -1,6 +1,6 @@
 import { Voucher } from './voucher';
 import { Message, Feedback } from './message';
-import { Column, Entity, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Provider } from './provider';
 import { BillDetail } from './bill';
 
@@ -17,6 +17,7 @@ export class ProductCategory {
     description: string;
 
     @ManyToMany(type => Product, product => product.categories)
+    @JoinTable()
     products: Product[];
 
 }
@@ -43,6 +44,11 @@ export class Product {
 
     @Column()
     quantity: number;
+
+    // @Column({
+    //     nullable: true
+    // })
+    // images: string[]; //TODO: find a way to store image urls
 
     @ManyToMany(type => ProductCategory, category => category.products)
     categories: ProductCategory[];

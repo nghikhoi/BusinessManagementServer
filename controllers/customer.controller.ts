@@ -7,7 +7,7 @@ export class CustomerController {
         return response.json(await CustomerRepository.find());
     }
 
-    static async getDepartment(request: Request, response: Response, next: NextFunction) {
+    static async getCustomer(request: Request, response: Response, next: NextFunction) {
         return response.json(await CustomerRepository.findOneBy({
             id: request.params.customer_id
         }));

@@ -2,7 +2,7 @@ import { SalaryRecord, OvertimeRecord } from './salary';
 import { Position } from './position';
 import { Skill } from './skill';
 import { Contract } from './contract';
-import { AfterLoad, BeforeInsert, BeforeUpdate, Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { AfterLoad, BeforeInsert, BeforeUpdate, Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Department } from './department';
 import { randomBytes } from 'crypto';
 import { hashSync } from '../routes/auth/auth.methods';
@@ -129,22 +129,25 @@ export class Employee {
 
 @Entity()
 export class EmployeeSkill {
-    
-        @PrimaryColumn()
-        employee_id: string;
-    
-        @PrimaryColumn()
-        skill_id: string;
 
-        @Column()
-        level: number;
+    @PrimaryColumn()
+    employee_id: string;
 
-        @ManyToOne(type => Employee, employee => employee.skills)
-        @JoinColumn({ name: "employee_id" })
-        employee: Employee;
+    @PrimaryColumn()
+    skill_id: string;
 
-        @ManyToOne(type => Skill, skill => skill.employees)
-        @JoinColumn({ name: "skill_id" })
-        skill: Skill;
+    @Column()
+    level: number;
+
+    @UpdateDateColumn()
+    updated_at: Date;
+
+    @ManyToOne(type => Employee, employee => employee.skills)
+    @JoinColumn({ name: "employee_id" })
+    employee: Employee;
+
+    @ManyToOne(type => Skill, skill => skill.employees)
+    @JoinColumn({ name: "skill_id" })
+    skill: Skill;
     
 }

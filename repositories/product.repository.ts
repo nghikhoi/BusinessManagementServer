@@ -20,7 +20,8 @@ export const ProductRepository = AppDataSource.getRepository(Product).extend({
             query = query.limit(limit)
         }
         const temp = decorator ? decorator(query) : query;
-        const result = temp.leftJoinAndSelect("product.images", "images").getMany();
+        // const result = temp.leftJoinAndSelect("product.images", "images").getMany();
+        const result = temp.getMany();
         if (search) {
             const search_key = !search_by ? "name" : search_by;
 

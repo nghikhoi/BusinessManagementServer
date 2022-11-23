@@ -1,6 +1,7 @@
-import { Employee, Gender } from './../models/employee';
+import { Contract, ContractType } from './../models/contract';
+import { Employee, Gender, EmployeeSkill } from './../models/employee';
 import { Department } from './../models/department';
-import { Product } from './../models/product';
+import { Product, ProductCategory } from './../models/product';
 import { Position } from './../models/position';
 import { Permission } from './../models/permission';
 import { Skill } from './../models/skill';
@@ -100,6 +101,28 @@ async function InitCommon() {
     console.log('Position created');
     //endregion
 
+    //region ProductCategory
+    const productCategoryRepo = AppDataSource.getRepository(ProductCategory);
+
+    const productCategory1: ProductCategory = productCategoryRepo.create({
+        name: 'ProductCategory 1',
+        description: 'ProductCategory 1'
+    });
+
+    const productCategory2: ProductCategory = productCategoryRepo.create({
+        name: 'ProductCategory 2',
+        description: 'ProductCategory 2'
+    });
+
+    const productCategory3: ProductCategory = productCategoryRepo.create({
+        name: 'ProductCategory 3',
+        description: 'ProductCategory 3'
+    });
+
+    await productCategoryRepo.save([productCategory1, productCategory2, productCategory3]);
+    console.log('ProductCategory created');
+    //endregion
+
     //region Product
     const productRepo = AppDataSource.getRepository(Product);
 
@@ -109,7 +132,8 @@ async function InitCommon() {
         price: 1000,
         quantity: 100,
         unit: 'Unit 1',
-        provider: provider1
+        provider: provider1,
+        categories: [productCategory1, productCategory2]
     });
 
     const product2: Product = productRepo.create({
@@ -118,7 +142,8 @@ async function InitCommon() {
         price: 2000,
         quantity: 200,
         unit: 'Unit 2',
-        provider: provider2
+        provider: provider2,
+        categories: [productCategory2, productCategory3]
     });
 
     const product3: Product = productRepo.create({
@@ -127,7 +152,8 @@ async function InitCommon() {
         price: 3000,
         quantity: 300,
         unit: 'Unit 3',
-        provider: provider3
+        provider: provider3,
+        categories: [productCategory3]
     });
 
     await productRepo.save([product1, product2, product3]);
@@ -203,6 +229,68 @@ async function InitCommon() {
 
     await employeeRepo.save([employee1, employee2, employee3]);
     console.log('Employee created');
+    //endregion
+
+    //region EmployeeSkill
+    const employeeSkillRepo = AppDataSource.getRepository(EmployeeSkill);
+
+    const employeeSkill1: EmployeeSkill = employeeSkillRepo.create({
+        employee: employee1,
+        skill: skill1,
+        level: 1
+    });
+
+    const employeeSkill2: EmployeeSkill = employeeSkillRepo.create({
+        employee: employee2,
+        skill: skill2,
+        level: 2
+    });
+
+    const employeeSkill3: EmployeeSkill = employeeSkillRepo.create({
+        employee: employee3,
+        skill: skill3,
+        level: 3
+    });
+
+    await employeeSkillRepo.save([employeeSkill1, employeeSkill2, employeeSkill3]);
+    console.log('EmployeeSkill created');
+    //endregion
+
+    //region Contract
+    const contractRepo = AppDataSource.getRepository(Contract);
+
+    const contract1: Contract = contractRepo.create({
+        name: 'Contract 1',
+        employee: employee1,
+        start_date: new Date(),
+        end_date: new Date(),
+        salary: 1000000,
+        bonus: 100000,
+        type: ContractType.LONG_TIME,
+    });
+
+    const contract2: Contract = contractRepo.create({
+        name: 'Contract 2',
+        employee: employee2,
+        start_date: new Date(),
+        end_date: new Date(),
+        salary: 2000000,
+        bonus: 200000,
+        type: ContractType.LONG_TIME,
+    });
+
+    const contract3: Contract = contractRepo.create({
+        name: 'Contract 3',
+        employee: employee3,
+        start_date: new Date(),
+        end_date: new Date(),
+        salary: 3000000,
+        bonus: 300000,
+        type: ContractType.LONG_TIME,
+    });
+
+    await contractRepo.save([contract1, contract2, contract3]);
+    console.log('Contract created');
     //endregion
 
     //region Image

@@ -1,6 +1,5 @@
 import { Product } from './product';
 import { Column, CreateDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
-import { Image } from "./file";
 
 @Entity()
 export class Provider {
@@ -24,11 +23,7 @@ export class Provider {
     @Column({
         nullable: true
     })
-    avatar_id: string
-
-    @OneToOne(type => Image, image => image.provider)
-    @JoinColumn({name: 'avatar_id'})
-    avatar: Image
+    avatar_url: string
 
     @CreateDateColumn()
     createdAt: Date

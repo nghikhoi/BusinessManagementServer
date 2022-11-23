@@ -7,7 +7,7 @@ export class ContractController {
         return response.json(await ContractRepository.find());
     }
 
-    static async getDepartment(request: Request, response: Response, next: NextFunction) {
+    static async getContract(request: Request, response: Response, next: NextFunction) {
         return response.json(await ContractRepository.findOneBy({
             id: +request.params.contract_id
         }));

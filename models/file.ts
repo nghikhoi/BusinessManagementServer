@@ -42,9 +42,6 @@ export class Image extends Media {
 
     @ManyToOne(type => Message, message => message.images)
     message: Message;
-
-    @OneToOne(type => Provider, provider => provider.avatar)
-    provider: Provider;
 }
 
 @Entity()
