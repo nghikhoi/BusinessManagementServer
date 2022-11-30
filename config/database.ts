@@ -1,7 +1,7 @@
 import { Product, ProductCategory } from './../models/product';
 import { Bill, BillDetail } from './../models/bill';
 import { Provider } from './../models/provider';
-import { Voucher } from './../models/voucher';
+import { VoucherType } from './../models/voucher';
 import { Message, Feedback, ReplyFeedback } from './../models/message';
 import { Audio, Image, Document, Video, Other } from './../models/file';
 import { Permission } from './../models/permission';
@@ -132,7 +132,7 @@ export const AppDataSource = new DataSource({
         Customer,
         Department,
 
-        Voucher
+        VoucherType
 
         //File
         , Video

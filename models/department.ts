@@ -14,6 +14,9 @@ export class Department {
         nullable: true
     })
     description: string;
+
+    @Column()
+    phone_number: string;
     
     @OneToOne(type => Employee, employee => employee.department)
     head_employee: Employee;

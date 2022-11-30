@@ -266,7 +266,7 @@ async function InitCommon() {
         end_date: new Date(),
         salary: 1000000,
         bonus: 100000,
-        type: ContractType.LONG_TIME,
+        type: ContractType.PERMNANENT,
     });
 
     const contract2: Contract = contractRepo.create({
@@ -276,7 +276,7 @@ async function InitCommon() {
         end_date: new Date(),
         salary: 2000000,
         bonus: 200000,
-        type: ContractType.LONG_TIME,
+        type: ContractType.PERMNANENT,
     });
 
     const contract3: Contract = contractRepo.create({
@@ -286,7 +286,7 @@ async function InitCommon() {
         end_date: new Date(),
         salary: 3000000,
         bonus: 300000,
-        type: ContractType.LONG_TIME,
+        type: ContractType.PERMNANENT,
     });
 
     await contractRepo.save([contract1, contract2, contract3]);

@@ -17,10 +17,10 @@ export enum DiscountType {
 }
 
 @Entity()
-export class Voucher {
+export class VoucherType {
 
-    @PrimaryGeneratedColumn("uuid")
-    id: string;
+    @PrimaryGeneratedColumn()
+    id: number;
 
     @Column()
     name: string;
@@ -60,14 +60,29 @@ export class Voucher {
     })
     require_min_value: number;
 
+    @OneToMany(type => Voucher, voucher => voucher.voucher_type)
+    vouchers: Voucher[];
+
+}
+
+@Entity()
+export class Voucher {
+
     @Column()
     code: string;
+
+    @Column()
+    type: number;
 
     @Column()
     release_date: Date;
 
     @Column()
     expire_date: Date;
+    
+    @ManyToOne(type => VoucherType, voucherType => voucherType.vouchers)
+    @JoinColumn({name: "type"})
+    voucher_type: VoucherType;
 
     @ManyToMany(type => Bill, bill => bill.used_vouchers)
     used_on_bill: Bill[]

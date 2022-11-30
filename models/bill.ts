@@ -1,3 +1,4 @@
+import { Employee } from './employee';
 import { Product } from './product';
 import { Customer } from './customer';
 import {
@@ -13,7 +14,7 @@ import {
     PrimaryColumn,
     PrimaryGeneratedColumn
 } from "typeorm";
-import {Voucher} from "./voucher";
+import {VoucherType, Voucher} from "./voucher";
 
 export enum Payment {
 
@@ -53,7 +54,7 @@ export class Bill {
     created_at: Date;
 
     @Column()
-    user_id: string;
+    customer_id: string;
 
     @Column({
         type: "bigint"
@@ -63,6 +64,13 @@ export class Bill {
     @ManyToOne(type => Customer, customer => customer.bills)
     @JoinColumn({name: 'customer_id'})
     customer: Customer
+
+    @Column()
+    create_employee_id: string;
+
+    @ManyToOne(type => Employee, employee => employee.bills)
+    @JoinColumn({name: 'create_employee_id'})
+    create_employee: Employee;
 
     @Column({
         type: "enum",

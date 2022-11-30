@@ -1,5 +1,6 @@
+import { Bill } from './bill';
 import { SalaryRecord, OvertimeRecord } from './salary';
-import { Position } from './position';
+import { Position, PositionRecord } from './position';
 import { Skill } from './skill';
 import { Contract } from './contract';
 import { AfterLoad, BeforeInsert, BeforeUpdate, Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
@@ -95,14 +96,8 @@ export class Employee {
     })
     citizen_id: string;
 
-    @Column({
-        nullable: true
-    })
-    position_id: string;
-
-    @ManyToOne(type => Position, position => position.employees)
-    @JoinColumn({name: 'position_id'})
-    position: Position;
+    @OneToMany(type => PositionRecord, position_records => position_records.employee)
+    position_records: PositionRecord[];
 
     @OneToMany(type => Contract, contract => contract.employee)
     contracts: Contract[];
@@ -124,6 +119,9 @@ export class Employee {
 
     @OneToMany(type => OvertimeRecord, overtime_record => overtime_record.employee)
     overtime_records: OvertimeRecord[];
+
+    @OneToMany(type => Bill, bill => bill.create_employee)
+    bills: Bill[];
 
 }
 

@@ -1,6 +1,6 @@
 import { Employee } from './employee';
 import { Permission } from './permission';
-import { Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Position {
@@ -19,10 +19,34 @@ export class Position {
     @OneToOne(type => Position, postion => postion.parent)
     parent: Position;
 
-    @OneToMany(type => Employee, employee => employee.position)
-    employees: Employee[];
-
     @OneToMany(type => Permission, permission => permission.position)
     permissions: Permission[];
+
+    @OneToMany(type => PositionRecord, positionRecord => positionRecord.position)
+    position_records: PositionRecord[];
+
+}
+
+@Entity()
+export class PositionRecord {
+
+    @PrimaryColumn()
+    employee_id: string;
+
+    @PrimaryColumn()
+    start_date: Date;
+
+    @PrimaryColumn()
+    end_date: Date;
+
+    @Column()
+    position_id: number;
+
+    @ManyToOne(type => Position, position => position.position_records)
+    position: Position;
+
+    @ManyToOne(type => Employee, employee => employee.position_records)
+    @JoinColumn({ name: "employee_id" })
+    employee: Employee;
 
 }
