@@ -10,7 +10,7 @@ export class VoucherController {
     static async getVoucher(req: Request, res: Response, next: NextFunction) {
         return res.json(await VoucherRepository.find({
             where: {
-                id: req.params.voucher_id
+                code: req.params.voucher_id
             }
         }));
     }

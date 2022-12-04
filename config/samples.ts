@@ -188,7 +188,6 @@ async function InitCommon() {
     const employee1: Employee = employeeRepo.create({
         name: 'Employee 1',
         department: department1,
-        position: position1,
         phone: '0123456789',
         email: 'em1@gmail.com',
         address: 'Address 1',
@@ -202,7 +201,6 @@ async function InitCommon() {
     const employee2: Employee = employeeRepo.create({
         name: 'Employee 2',
         department: department2,
-        position: position2,
         phone: '0123456789',
         email: 'em2@gmail.com',
         address: 'Address 2',
@@ -216,7 +214,6 @@ async function InitCommon() {
     const employee3: Employee = employeeRepo.create({
         name: 'Employee 3',
         department: department3,
-        position: position3,
         phone: '0123456789',
         email: 'em3@gmail.com',
         address: 'Address 3',

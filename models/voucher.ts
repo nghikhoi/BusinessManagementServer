@@ -6,6 +6,7 @@ import {
     JoinColumn, JoinTable, ManyToMany,
     ManyToOne,
     OneToMany,
+    PrimaryColumn,
     PrimaryGeneratedColumn,
     TableInheritance
 } from "typeorm";
@@ -68,7 +69,7 @@ export class VoucherType {
 @Entity()
 export class Voucher {
 
-    @Column()
+    @PrimaryColumn()
     code: string;
 
     @Column()

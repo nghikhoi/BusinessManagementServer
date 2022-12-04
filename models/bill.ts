@@ -117,8 +117,8 @@ export class Bill {
             referencedColumnName: "id"
         },
         inverseJoinColumn: {
-            name: "voucher_profile_id",
-            referencedColumnName: "id"
+            name: "voucher_code",
+            referencedColumnName: "code"
         }
     })
     used_vouchers: Voucher[];

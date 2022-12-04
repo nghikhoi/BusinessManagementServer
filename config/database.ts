@@ -1,7 +1,7 @@
 import { Product, ProductCategory } from './../models/product';
 import { Bill, BillDetail } from './../models/bill';
 import { Provider } from './../models/provider';
-import { VoucherType } from './../models/voucher';
+import { Voucher, VoucherType } from './../models/voucher';
 import { Message, Feedback, ReplyFeedback } from './../models/message';
 import { Audio, Image, Document, Video, Other } from './../models/file';
 import { Permission } from './../models/permission';
@@ -9,7 +9,7 @@ import { Department } from './../models/department';
 import { Contract } from './../models/contract';
 import { SalaryRecord, OvertimeRecord } from './../models/salary';
 import { Skill } from './../models/skill';
-import { Position } from './../models/position';
+import { Position, PositionRecord } from './../models/position';
 import { Customer } from './../models/customer';
 import { Employee, EmployeeSkill } from './../models/employee';
 import "reflect-metadata"
@@ -122,17 +122,18 @@ export const AppDataSource = new DataSource({
         Provider,
         ProductCategory,
         Product,
+        VoucherType,
+        Voucher,
         BillDetail,
         Bill,
 
+        PositionRecord,
         Employee,
         EmployeeSkill,
         OvertimeRecord,
         SalaryRecord,
         Customer,
         Department,
-
-        VoucherType
 
         //File
         , Video

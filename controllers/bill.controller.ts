@@ -22,7 +22,7 @@ export class BillController {
     static async getByUser(req: Request, res: Response, next: NextFunction) {
         return res.json(await BillRepository.find({
             where: {
-                user_id: req.params.user_id
+                customer_id: req.params.customer_id
             }
         }));
     }
