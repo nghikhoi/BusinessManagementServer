@@ -1,10 +1,10 @@
 import { Contract, ContractType } from './../models/contract';
-import { Employee, Gender, EmployeeSkill } from './../models/employee';
+import { Employee, Gender, Skill } from './../models/employee';
 import { Department } from './../models/department';
 import { Product, ProductCategory } from './../models/product';
 import { Position } from './../models/position';
 import { Permission } from './../models/permission';
-import { Skill } from './../models/skill';
+import { SkillType } from './../models/skill';
 import { Provider } from './../models/provider';
 import { AppDataSource } from './database';
 import {init} from "../variables/run.variable";
@@ -34,19 +34,19 @@ async function InitCommon() {
     //endregion
 
     //region Skill
-    const skillRepo = AppDataSource.getRepository(Skill);
+    const skillRepo = AppDataSource.getRepository(SkillType);
 
-    const skill1: Skill = skillRepo.create({
+    const skill1: SkillType = skillRepo.create({
         name: 'Skill 1',
         description: 'Skill 1'
     });
 
-    const skill2: Skill = skillRepo.create({    
+    const skill2: SkillType = skillRepo.create({    
         name: 'Skill 2',
         description: 'Skill 2'
     });
 
-    const skill3: Skill = skillRepo.create({
+    const skill3: SkillType = skillRepo.create({
         name: 'Skill 3',
         description: 'Skill 3'
     });
@@ -229,21 +229,21 @@ async function InitCommon() {
     //endregion
 
     //region EmployeeSkill
-    const employeeSkillRepo = AppDataSource.getRepository(EmployeeSkill);
+    const employeeSkillRepo = AppDataSource.getRepository(Skill);
 
-    const employeeSkill1: EmployeeSkill = employeeSkillRepo.create({
+    const employeeSkill1: Skill = employeeSkillRepo.create({
         employee: employee1,
         skill: skill1,
         level: 1
     });
 
-    const employeeSkill2: EmployeeSkill = employeeSkillRepo.create({
+    const employeeSkill2: Skill = employeeSkillRepo.create({
         employee: employee2,
         skill: skill2,
         level: 2
     });
 
-    const employeeSkill3: EmployeeSkill = employeeSkillRepo.create({
+    const employeeSkill3: Skill = employeeSkillRepo.create({
         employee: employee3,
         skill: skill3,
         level: 3
@@ -263,7 +263,6 @@ async function InitCommon() {
         end_date: new Date(),
         salary: 1000000,
         bonus: 100000,
-        type: ContractType.PERMNANENT,
     });
 
     const contract2: Contract = contractRepo.create({
@@ -273,7 +272,6 @@ async function InitCommon() {
         end_date: new Date(),
         salary: 2000000,
         bonus: 200000,
-        type: ContractType.PERMNANENT,
     });
 
     const contract3: Contract = contractRepo.create({
@@ -283,7 +281,6 @@ async function InitCommon() {
         end_date: new Date(),
         salary: 3000000,
         bonus: 300000,
-        type: ContractType.PERMNANENT,
     });
 
     await contractRepo.save([contract1, contract2, contract3]);

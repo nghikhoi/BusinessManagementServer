@@ -14,8 +14,16 @@ export class Customer {
     @Column()
     email: string;
 
-    @Column()
+    @Column({
+        unique: true
+    })
     phone: string;
+
+    @Column({
+        nullable: true,
+        unique: true
+    })
+    citizen_id: string;
 
     @Column()
     address: string;

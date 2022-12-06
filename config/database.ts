@@ -6,12 +6,12 @@ import { Message, Feedback, ReplyFeedback } from './../models/message';
 import { Audio, Image, Document, Video, Other } from './../models/file';
 import { Permission } from './../models/permission';
 import { Department } from './../models/department';
-import { Contract } from './../models/contract';
+import { Contract, ContractType } from './../models/contract';
 import { SalaryRecord, OvertimeRecord } from './../models/salary';
-import { Skill } from './../models/skill';
+import { SkillType } from './../models/skill';
 import { Position, PositionRecord } from './../models/position';
 import { Customer } from './../models/customer';
-import { Employee, EmployeeSkill } from './../models/employee';
+import { Employee, Skill } from './../models/employee';
 import "reflect-metadata"
 import {DataSource, DefaultNamingStrategy, NamingStrategyInterface, Table} from "typeorm"
 import {
@@ -116,7 +116,8 @@ export const AppDataSource = new DataSource({
     entities: [
         Permission,
         Position,
-        Skill,
+        SkillType,
+        ContractType,
         Contract,
 
         Provider,
@@ -129,7 +130,7 @@ export const AppDataSource = new DataSource({
 
         PositionRecord,
         Employee,
-        EmployeeSkill,
+        Skill,
         OvertimeRecord,
         SalaryRecord,
         Customer,

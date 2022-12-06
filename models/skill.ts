@@ -1,8 +1,8 @@
-import { Employee, EmployeeSkill } from './employee';
+import { Employee, Skill as Skill } from './employee';
 import { Column, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
-export class Skill {
+export class SkillType {
 
     @PrimaryGeneratedColumn()
     id: number;
@@ -15,7 +15,7 @@ export class Skill {
     })
     description: string;
 
-    @OneToMany(type => EmployeeSkill, employeeSkill => employeeSkill.skill)
-    employees: EmployeeSkill[];
+    @OneToMany(type => Skill, employeeSkill => employeeSkill.skill)
+    employees: Skill[];
 
 }

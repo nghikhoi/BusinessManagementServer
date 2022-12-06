@@ -1,9 +1,28 @@
 import { Employee } from './employee';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 
-export enum ContractType {
+@Entity()
+export class ContractType {
 
-    INTERN, ONE_YEAR, THREE_YEARS, PERMNANENT
+    @PrimaryColumn()
+    id: string;
+
+    @Column()
+    name: string;
+
+    @Column({
+        nullable: true
+    })
+    description: string;
+
+    @Column()
+    base_salary: number;
+
+    @Column()
+    period: number;
+
+    @OneToMany(contract => Contract, contract => contract.type)
+    contracts: Contract[];
 
 }
 
@@ -21,13 +40,6 @@ export class Contract {
     })
     description: string;
 
-    @Column({
-        type: "enum",
-        enum: ContractType,
-        default: ContractType.INTERN
-    })
-    type: ContractType;
-
     @Column()
     start_date: Date;
 
@@ -42,6 +54,9 @@ export class Contract {
 
     @Column()
     status: number = 0;
+
+    @ManyToOne(type => ContractType, contract_type => contract_type.contracts)
+    type: ContractType;
 
     @ManyToOne(type => Employee, employee => employee.contracts)
     employee: Employee;

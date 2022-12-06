@@ -1,7 +1,7 @@
 import { Bill } from './bill';
 import { SalaryRecord, OvertimeRecord } from './salary';
 import { Position, PositionRecord } from './position';
-import { Skill } from './skill';
+import { SkillType } from './skill';
 import { Contract } from './contract';
 import { AfterLoad, BeforeInsert, BeforeUpdate, Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Department } from './department';
@@ -70,7 +70,9 @@ export class Employee {
     @Column()
     email: string;
 
-    @Column()
+    @Column({
+        unique: true
+    })
     phone: string;
 
     @Column({
@@ -92,7 +94,8 @@ export class Employee {
     birthday: Date
 
     @Column({
-        nullable: true
+        nullable: true,
+        unique: true
     })
     citizen_id: string;
 
@@ -111,8 +114,8 @@ export class Employee {
     @JoinColumn({name: 'department_id'})
     department: Department;
 
-    @OneToMany(type => EmployeeSkill, skill => skill.employee)
-    skills: EmployeeSkill[];
+    @OneToMany(type => Skill, skill => skill.employee)
+    skills: Skill[];
 
     @OneToMany(type => SalaryRecord, salary_record => salary_record.employee)
     salary_records: SalaryRecord[];
@@ -126,7 +129,7 @@ export class Employee {
 }
 
 @Entity()
-export class EmployeeSkill {
+export class Skill {
 
     @PrimaryColumn()
     employee_id: string;
@@ -144,8 +147,8 @@ export class EmployeeSkill {
     @JoinColumn({ name: "employee_id" })
     employee: Employee;
 
-    @ManyToOne(type => Skill, skill => skill.employees)
+    @ManyToOne(type => SkillType, skill => skill.employees)
     @JoinColumn({ name: "skill_id" })
-    skill: Skill;
+    skill: SkillType;
     
 }
