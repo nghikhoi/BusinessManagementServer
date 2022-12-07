@@ -1,4 +1,4 @@
-import { Employee, Skill as Skill } from './employee';
+import { Skill } from './employee';
 import { Column, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
