@@ -114,13 +114,20 @@ export class Employee {
     @JoinColumn({name: 'department_id'})
     department: Department;
 
-    @OneToMany(type => Skill, skill => skill.employee)
+    @OneToMany(type => Skill, skill => skill.employee, {
+        cascade: true,
+        eager: true
+    })
     skills: Skill[];
 
-    @OneToMany(type => SalaryRecord, salary_record => salary_record.employee)
+    @OneToMany(type => SalaryRecord, salary_record => salary_record.employee, {
+        eager: true
+    })
     salary_records: SalaryRecord[];
 
-    @OneToMany(type => OvertimeRecord, overtime_record => overtime_record.employee)
+    @OneToMany(type => OvertimeRecord, overtime_record => overtime_record.employee, {
+        eager: true
+    })
     overtime_records: OvertimeRecord[];
 
     @OneToMany(type => Bill, bill => bill.create_employee)
@@ -147,7 +154,9 @@ export class Skill {
     @JoinColumn({ name: "employee_id" })
     employee: Employee;
 
-    @ManyToOne(type => SkillType, skill => skill.employees)
+    @ManyToOne(type => SkillType, skill => skill.employees, {
+        eager: true
+    })
     @JoinColumn({ name: "skill_id" })
     skill: SkillType;
     

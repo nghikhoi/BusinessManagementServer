@@ -55,7 +55,9 @@ export class Contract {
     @Column()
     status: number = 0;
 
-    @ManyToOne(type => ContractType, contract_type => contract_type.contracts)
+    @ManyToOne(type => ContractType, contract_type => contract_type.contracts, {
+        eager: true
+    })
     type: ContractType;
 
     @ManyToOne(type => Employee, employee => employee.contracts)

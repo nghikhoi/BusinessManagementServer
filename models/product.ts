@@ -43,20 +43,24 @@ export class Product {
     price: number;
 
     @Column()
-    quantity: number;
+    stock: number;
 
     // @Column({
     //     nullable: true
     // })
     // images: string[]; //TODO: find a way to store image urls
 
-    @ManyToMany(type => ProductCategory, category => category.products)
+    @ManyToMany(type => ProductCategory, category => category.products, {
+        eager: true
+    })
     categories: ProductCategory[];
 
     @OneToMany(type => BillDetail, bill_detail => bill_detail.product)
     bill_details: BillDetail[];
 
-    @ManyToOne(type => Provider, provider => provider.products)
+    @ManyToOne(type => Provider, provider => provider.products, {
+        eager: true
+    })
     provider: Provider;
 
     @OneToMany(type => Feedback, feedback => feedback.product)

@@ -19,16 +19,18 @@ export class ProviderController {
     }
 
     static async update(req: Request, res: Response, next: NextFunction) {
-        const publisher = await ProviderRepository.findOneBy({
-            id: +req.params.id
+        const entity = await ProviderRepository.findOne({
+            where: {
+                id: +req.params.id
+            }
         });
-        if (!publisher) {
+        if (!entity) {
             return res.status(404).json({
-                message: "Author not found"
+                message: "Entity not found"
             });
         }
-        ProviderRepository.merge(publisher, req.body);
-        return res.json(await ProviderRepository.save(publisher));
+        const result = ProviderRepository.merge(entity, req.body);
+        return res.json(await ProviderRepository.save(result));
     }
 
     static async delete(req: Request, res: Response, next: NextFunction) {

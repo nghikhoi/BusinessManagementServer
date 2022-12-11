@@ -19,19 +19,23 @@ export class ProductController {
         return response.json(await ProductRepository.search(query.select as string[], query.skip as any, query.limit as any, query.search as any, query.search_by as any));
     }
 
-    static async createOrUpdate(request: Request, response: Response, next: NextFunction) {
-        let product;
-        if (request.params.id) {
-            product = await ProductRepository.findOne({
-                where: {
-                    id: +request.params.id
-                }
+    static async update(req: Request, res: Response, next: NextFunction) {
+        const entity = await ProductRepository.findOne({
+            where: {
+                id: +req.params.bill_id
+            }
+        });
+        if (!entity) {
+            return res.status(404).json({
+                message: "Entity not found"
             });
-            ProductRepository.merge(product, request.body);
-        } else {
-            product = ProductRepository.create(request.body);
         }
-        return response.json(await ProductRepository.save(product));
+        const result = ProductRepository.merge(entity, req.body);
+        return res.json(await ProductRepository.save(result));
+    }
+
+    static async save(request: Request, response: Response, next: NextFunction) {
+        return ProductRepository.save(request.body)
     }
 
     static async delete(request: Request, response: Response, next: NextFunction) {

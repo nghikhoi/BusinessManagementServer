@@ -20,27 +20,5 @@ export const BillRepository = AppDataSource.getRepository(Bill).extend({
         }
         const temp = decorator ? decorator(query) : query;
         return temp.leftJoinAndSelect("bill.bill_details", "bill_details").getMany();
-    },
-    async createFrom(user_id: string, items: any[]) {
-        const bill: Bill = this.create({
-            user_id: user_id,
-            status: BillStatus.WAITING
-        });
-
-        bill.bill_details = await Promise.all(items.map(async item => {
-            const book = item.book != null ? item.book : await ProductRepository.findOne({
-                where: {
-                    id: item.product_id
-                }
-            });
-            return BillDetailRepository.create({
-                bill_id: bill.id,
-                product_id: item.product_id,
-                quantity: item.quantity,
-                unit_price: book.price
-            });
-        }));
-
-        return bill;
     }
 });

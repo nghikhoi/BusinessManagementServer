@@ -6,17 +6,14 @@ export class BillController {
     static async getVouchers(req: Request, res: Response, next: NextFunction) {
         const bill = await BillRepository.findOne({
             where: {
-                id: +req.params.bill_id
+                id: +req.params.id
             },
             relations: {
                 used_vouchers: true
-            }
+            },
+            select: ["used_vouchers"]
         });
         return res.json(bill.used_vouchers);
-    }
-
-    static async search(req: Request, res: Response, next: NextFunction) {
-        return res.json(await BillRepository.search(req.query.select as any, req.query.skip as any, req.query.limit as any))
     }
 
     static async getByUser(req: Request, res: Response, next: NextFunction) {
@@ -27,18 +24,22 @@ export class BillController {
         }));
     }
 
-    static async getBill(req: Request, res: Response, next: NextFunction) {
+    static async search(req: Request, res: Response, next: NextFunction) {
+        return res.json(await BillRepository.search(req.query.select as any, req.query.skip as any, req.query.limit as any))
+    }
+
+    static async get(req: Request, res: Response, next: NextFunction) {
         return res.json(await BillRepository.findOne({
             where: {
-                id: +req.params.bill_id
+                id: +req.params.id
             }
         }));
     }
 
-    static async updateBillStatus(req: Request, res: Response, next: NextFunction) {
+    static async update(req: Request, res: Response, next: NextFunction) {
         const bill = await BillRepository.findOne({
             where: {
-                id: +req.params.bill_id
+                id: +req.params.id
             }
         });
         if (!bill) {
@@ -48,6 +49,10 @@ export class BillController {
         }
         const result = BillRepository.merge(bill, req.body);
         return res.json(await BillRepository.save(result));
+    }
+
+    static async create(req: Request, res: Response, next: NextFunction) {
+        return res.json(await BillRepository.save(req.body));
     }
 
 }

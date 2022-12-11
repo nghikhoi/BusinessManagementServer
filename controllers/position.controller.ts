@@ -13,6 +13,21 @@ export class PositionController {
         }));
     }
 
+    static async update(req: Request, res: Response, next: NextFunction) {
+        const entity = await PositionRepository.findOne({
+            where: {
+                id: +req.params.bill_id
+            }
+        });
+        if (!entity) {
+            return res.status(404).json({
+                message: "Entity not found"
+            });
+        }
+        const result = PositionRepository.merge(entity, req.body);
+        return res.json(await PositionRepository.save(result));
+    }
+
     static async save(request: Request, response: Response, next: NextFunction) {
         return PositionRepository.save(request.body)
     }

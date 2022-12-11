@@ -13,6 +13,21 @@ export class PermissionController {
         }));
     }
 
+    static async update(req: Request, res: Response, next: NextFunction) {
+        const entity = await PermissionRepository.findOne({
+            where: {
+                id: +req.params.id
+            }
+        });
+        if (!entity) {
+            return res.status(404).json({
+                message: "Entity not found"
+            });
+        }
+        const result = PermissionRepository.merge(entity, req.body);
+        return res.json(await PermissionRepository.save(result));
+    }
+
     static async save(request: Request, response: Response, next: NextFunction) {
         return PermissionRepository.save(request.body)
     }

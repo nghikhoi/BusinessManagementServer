@@ -141,7 +141,8 @@ export const AppDataSource = new DataSource({
         , Audio
         , Image
         , Document
-        , Other
+        , Other.
+        
 
         //Message
         , Message
