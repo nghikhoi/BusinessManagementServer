@@ -2,25 +2,30 @@ import { EmployeeRepository } from './../repositories/employee.repository';
 import {NextFunction, Request, Response} from "express"
 import {bodyFilter} from "./helper";
 import { passwordVerify } from "../routes/auth/auth.methods";
+import { PermissionRequire } from './authorize.controller';
 
 export class EmployeeController {
 
+    @PermissionRequire("data.bill.get")
     static async getAll(request: Request, response: Response, next: NextFunction) {
         return response.json(await EmployeeRepository.find());
     }
 
+    @PermissionRequire("data.bill.get")
     static async getAllByDepartment(request: Request, response: Response, next: NextFunction) {
         return response.json(await EmployeeRepository.findBy({
             department_id: request.params.department_id
         }));
     }
 
+    @PermissionRequire("data.bill.get")
     static async getUser(request: Request, response: Response, next: NextFunction) {
         return response.json(await EmployeeRepository.findOneBy({
             id: request.params.user_id
         }));
     }
 
+    @PermissionRequire("data.bill.get")
     static async search(request: Request, response: Response, next: NextFunction) {
         const query = request.query;
         if (request.params.search) {
@@ -29,10 +34,12 @@ export class EmployeeController {
         return response.json(await EmployeeRepository.search(query.select as any, query.skip as any, query.limit as any, query.search as any, query.search_by as any));
     }
 
+    @PermissionRequire("data.bill.get")
     static async save(request: Request, response: Response, next: NextFunction) {
         return EmployeeRepository.save(request.body)
     }
 
+    @PermissionRequire("data.bill.get")
     static async register(request: Request, response: Response, next: NextFunction) {
         const username =  request.body.username;
 
@@ -62,11 +69,13 @@ export class EmployeeController {
         });
     }
 
+    @PermissionRequire("data.bill.get")
     static async remove(request: Request, response: Response, next: NextFunction) {
         let userToRemove = await EmployeeRepository.findOneBy({id: request.params['id']})
         await EmployeeRepository.remove(userToRemove)
     }
 
+    @PermissionRequire("data.bill.get")
     static async changePassword(request: Request, response: Response, next: NextFunction) {
         const targetId = request.params.user_id;
         const oldPassword = request.body.old_password;

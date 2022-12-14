@@ -11,6 +11,7 @@ const swaggerDocs = require("./utils/swagger");
 const {ImageRepository} = require("./repositories/file.repository");
 const path = require("path");
 const {Router} = require("express");
+const { AuthorityService } = require('./services/authority.service');
 
 const RunApp = async () => {
     const app = express();
@@ -39,6 +40,7 @@ const RunApp = async () => {
 
     await AppDataSource.initialize();
     await InitSamples();
+    AuthorityService.default_permissions;
     //endregion
 
     //region Routes

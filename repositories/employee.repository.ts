@@ -1,3 +1,4 @@
+import { PositionRecord } from './../models/position';
 import { Employee, Skill } from './../models/employee';
 import {AppDataSource} from "../config/database";
 import {SelectQueryBuilder} from "typeorm";
@@ -63,13 +64,14 @@ export const EmployeeRepository = AppDataSource.getRepository(Employee).extend({
             return decorator ? decorator(temp) : temp;
         });
     },
-    findOneByUser(username: string, select?: string[]) {
-        let query: SelectQueryBuilder<Employee> = this.createQueryBuilder("employee").where("LOWER(username) LIKE :username", {employeename: `${username.toLowerCase()}`})
+    findOneByUser(username: string, select?: string[]) : Promise<Employee | null> {
+        let query: SelectQueryBuilder<Employee> = this.createQueryBuilder("employee")
+        .where("LOWER(username) LIKE :username", {employeename: `${username.toLowerCase()}`})
             .orWhere("LOWER(email) LIKE :username", {username: `${username.toLowerCase()}`});
         if (select) {
             query = query.select(select.map(item => "employee." + item));
         }
-        return query.getOne();
+        return query.leftJoinAndMapMany('employee.id', PositionRecord, 'record', 'record.employee_id = employee.id').getOne();
     }
 })
 

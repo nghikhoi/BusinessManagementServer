@@ -1,9 +1,11 @@
 import { ProductRepository } from './../repositories/product.repository';
 import {NextFunction, Request, Response} from "express"
 import {FeedbackRepository} from "../repositories/feedback.repository";
+import { PermissionRequire } from './authorize.controller';
 
 export class ProductController {
 
+    @PermissionRequire("data.bill.get")
     static async getFeedback(req: Request, res: Response, next: NextFunction) {
         return res.json(await FeedbackRepository.find({
             where: {
@@ -12,6 +14,7 @@ export class ProductController {
         }));
     }
 
+    @PermissionRequire("data.bill.get")
     static async search(request: Request, response: Response, next: NextFunction) {
         if (request.params.search) {
         }
@@ -19,6 +22,7 @@ export class ProductController {
         return response.json(await ProductRepository.search(query.select as string[], query.skip as any, query.limit as any, query.search as any, query.search_by as any));
     }
 
+    @PermissionRequire("data.bill.get")
     static async update(req: Request, res: Response, next: NextFunction) {
         const entity = await ProductRepository.findOne({
             where: {
@@ -34,10 +38,12 @@ export class ProductController {
         return res.json(await ProductRepository.save(result));
     }
 
+    @PermissionRequire("data.bill.get")
     static async save(request: Request, response: Response, next: NextFunction) {
         return ProductRepository.save(request.body)
     }
 
+    @PermissionRequire("data.bill.get")
     static async delete(request: Request, response: Response, next: NextFunction) {
         const product = await ProductRepository.findOne({
             where: {
@@ -55,6 +61,7 @@ export class ProductController {
         return response.json(product);
     }
 
+    @PermissionRequire("data.bill.get")
     static async recommend(request: Request, response: Response, next: NextFunction) { //TODO
         if (request.params.search) {
 
@@ -62,6 +69,7 @@ export class ProductController {
         return response.json(await ProductRepository.search(request.query.select as string[], request.query.skip as any, request.query.limit as any));
     }
 
+    @PermissionRequire("data.bill.get")
     static async getProduct(request: Request, response: Response, next: NextFunction) {
         return response.json(await ProductRepository.findOne({
             where: {

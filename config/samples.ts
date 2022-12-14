@@ -130,7 +130,7 @@ async function InitCommon() {
         name: 'Product 1',
         description: 'Product 1',
         price: 1000,
-        quantity: 100,
+        stock: 100,
         unit: 'Unit 1',
         provider: provider1,
         categories: [productCategory1, productCategory2]
@@ -140,7 +140,7 @@ async function InitCommon() {
         name: 'Product 2',
         description: 'Product 2',
         price: 2000,
-        quantity: 200,
+        stock: 200,
         unit: 'Unit 2',
         provider: provider2,
         categories: [productCategory2, productCategory3]
@@ -150,7 +150,7 @@ async function InitCommon() {
         name: 'Product 3',
         description: 'Product 3',
         price: 3000,
-        quantity: 300,
+        stock: 300,
         unit: 'Unit 3',
         provider: provider3,
         categories: [productCategory3]

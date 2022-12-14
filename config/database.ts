@@ -99,6 +99,43 @@ if (DATABASE_SOCKET_PATH) {
     console.log(`   SOCKET_PATH: ${_connectionString}`);
 }
 
+export const EntitySchemas = [
+    Permission,
+    Position,
+    SkillType,
+    ContractType,
+    Contract,
+
+    Provider,
+    ProductCategory,
+    Product,
+    VoucherType,
+    Voucher,
+    BillDetail,
+    Bill,
+
+    PositionRecord,
+    Employee,
+    Skill,
+    OvertimeRecord,
+    SalaryRecord,
+    Customer,
+    Department,
+
+    //File
+    , Video
+    , Audio
+    , Image
+    , Document
+    , Other
+    
+
+    //Message
+    , Message
+    , Feedback
+    , ReplyFeedback
+];
+
 export const AppDataSource = new DataSource({
     type: DATABASE_DRIVER as any,
     host: _host,
@@ -113,40 +150,5 @@ export const AppDataSource = new DataSource({
     synchronize: true,
     logging: ['error', 'info'],
     namingStrategy: new LowercaseNamingStrategy(),
-    entities: [
-        Permission,
-        Position,
-        SkillType,
-        ContractType,
-        Contract,
-
-        Provider,
-        ProductCategory,
-        Product,
-        VoucherType,
-        Voucher,
-        BillDetail,
-        Bill,
-
-        PositionRecord,
-        Employee,
-        Skill,
-        OvertimeRecord,
-        SalaryRecord,
-        Customer,
-        Department,
-
-        //File
-        , Video
-        , Audio
-        , Image
-        , Document
-        , Other.
-        
-
-        //Message
-        , Message
-        , Feedback
-        , ReplyFeedback
-    ]
+    entities: EntitySchemas
 })

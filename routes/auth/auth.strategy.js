@@ -8,13 +8,18 @@ const JwtVariable = require('../../variables/jwt.variable');
 const routeVariable = require('../../variables/routes.variable');
 
 const { EmployeeRepository, AuthProperties, IdentifyProperties } = require('../../repositories/employee.repository');
+const { PermissionUtils } = require('../../utils/permission.utils');
 
 const usernameField = 'username';
 const passwordField = 'password';
 
 const findUser = async (username) => {
   const properties = [].concat(IdentifyProperties, AuthProperties);
-  return await EmployeeRepository.findOneByUser(username, properties);
+  const user = await EmployeeRepository.findOneByUser(username, properties);
+  if (!user.position_records) {
+    user.permissions = user.position_records.flatMap(position => position.permissions).map(permission => PermissionUtils.toString(permission));
+  }
+  return user;
 };
 
 exports.Local = new LocalStrategy({
