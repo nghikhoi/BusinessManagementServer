@@ -4,12 +4,12 @@ import { PermissionRequire } from "./authorize.controller";
 
 export class VoucherController {
 
-    @PermissionRequire("data.bill.get")
+    @PermissionRequire("data.voucher.get")
     static async getVouchers(req: Request, res: Response, next: NextFunction) {
         return res.json(await VoucherRepository.find());
     }
 
-    @PermissionRequire("data.bill.get")
+    @PermissionRequire("data.voucher.get")
     static async getVoucher(req: Request, res: Response, next: NextFunction) {
         return res.json(await VoucherRepository.find({
             where: {

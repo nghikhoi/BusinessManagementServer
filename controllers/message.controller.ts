@@ -5,7 +5,7 @@ import { PermissionRequire } from "./authorize.controller";
 
 export class MessageController {
 
-    @PermissionRequire("data.bill.get")
+    @PermissionRequire("data.message.get")
     static async getFeedback(req: Request, res: Response, next: NextFunction) {
         return res.json(await FeedbackRepository.find({
             where: {
@@ -14,12 +14,12 @@ export class MessageController {
         }));
     }
 
-    @PermissionRequire("data.bill.get")
+    @PermissionRequire("data.message.get")
     static async getFeedbacks(req: Request, res: Response, next: NextFunction) {
         return res.json(await FeedbackRepository.search(req.query.select as any, req.query.skip as any, req.query.limit as any));
     }
 
-    @PermissionRequire("data.bill.get")
+    @PermissionRequire("data.message.get")
     static async addFeedback(req: Request, res: Response, next: NextFunction) {
         const feedback = FeedbackRepository.create({
             user_id: req["user"]["id"],
@@ -48,7 +48,7 @@ export class MessageController {
         return res.json(await FeedbackRepository.save(feedback));
     }
 
-    @PermissionRequire("data.bill.get")
+    @PermissionRequire("data.message.get")
     static async addMessage(req: Request, res: Response, next: NextFunction) {
         const message = ReplyFeedbackRepository.create({
             user_id: req["user"]["id"],

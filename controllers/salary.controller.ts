@@ -4,17 +4,17 @@ import { PermissionRequire } from "./authorize.controller";
 
 export class SalaryController {
 
-    @PermissionRequire("data.bill.get")
+    @PermissionRequire("data.salary.get")
     static async search(request: Request, response: Response, next: NextFunction) {
         //TODO
     }
 
-    @PermissionRequire("data.bill.get")
+    @PermissionRequire("data.salary.get")
     static async save(request: Request, response: Response, next: NextFunction) {
         return SalaryRepository.save(request.body)
     }
 
-    @PermissionRequire("data.bill.get")
+    @PermissionRequire("data.salary.get")
     static async update(req: Request, res: Response, next: NextFunction) {
         const entity = await SalaryRepository.findOne({
             where: {
@@ -32,7 +32,7 @@ export class SalaryController {
         return res.json(await SalaryRepository.save(result));
     }
 
-    @PermissionRequire("data.bill.get")
+    @PermissionRequire("data.salary.get")
     static async delete(request: Request, response: Response, next: NextFunction) {
         return SalaryRepository.delete(request.body)
     }

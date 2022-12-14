@@ -4,19 +4,19 @@ import { PermissionRequire } from "./authorize.controller";
 
 export class SkillController {
 
-    @PermissionRequire("data.bill.get")
+    @PermissionRequire("data.skill.get")
     static async getAll(request: Request, response: Response, next: NextFunction) {
         return response.json(await SkillTypeRepository.find());
     }
 
-    @PermissionRequire("data.bill.get")
+    @PermissionRequire("data.skill.get")
     static async getOne(request: Request, response: Response, next: NextFunction) {
         return response.json(await SkillTypeRepository.findOneBy({
             id: +request.params.skill_id
         }));
     }
 
-    @PermissionRequire("data.bill.get")
+    @PermissionRequire("data.skill.get")
     static async update(req: Request, res: Response, next: NextFunction) {
         const entity = await SkillTypeRepository.findOne({
             where: {
@@ -32,12 +32,12 @@ export class SkillController {
         return res.json(await SkillTypeRepository.save(result));
     }
 
-    @PermissionRequire("data.bill.get")
+    @PermissionRequire("data.skill.get")
     static async save(request: Request, response: Response, next: NextFunction) {
         return SkillTypeRepository.save(request.body)
     }
 
-    @PermissionRequire("data.bill.get")
+    @PermissionRequire("data.skill.get")
     static async delete(request: Request, response: Response, next: NextFunction) {
         return SkillTypeRepository.delete(request.body)
     }

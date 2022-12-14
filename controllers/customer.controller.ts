@@ -4,19 +4,19 @@ import { PermissionRequire } from './authorize.controller';
 
 export class CustomerController {
 
-    @PermissionRequire("data.bill.get")
+    @PermissionRequire("data.customer.get")
     static async getAll(request: Request, response: Response, next: NextFunction) {
         return response.json(await CustomerRepository.find());
     }
 
-    @PermissionRequire("data.bill.get")
+    @PermissionRequire("data.customer.get")
     static async getCustomer(request: Request, response: Response, next: NextFunction) {
         return response.json(await CustomerRepository.findOneBy({
             id: request.params.customer_id
         }));
     }
 
-    @PermissionRequire("data.bill.get")
+    @PermissionRequire("data.customer.get")
     static async update(req: Request, res: Response, next: NextFunction) {
         const entity = await CustomerRepository.findOne({
             where: {
@@ -32,12 +32,12 @@ export class CustomerController {
         return res.json(await CustomerRepository.save(result));
     }
 
-    @PermissionRequire("data.bill.get")
+    @PermissionRequire("data.customer.get")
     static async save(request: Request, response: Response, next: NextFunction) {
         return CustomerRepository.save(request.body)
     }
 
-    @PermissionRequire("data.bill.get")
+    @PermissionRequire("data.customer.get")
     static async delete(request: Request, response: Response, next: NextFunction) {
         return CustomerRepository.delete(request.body)
     }

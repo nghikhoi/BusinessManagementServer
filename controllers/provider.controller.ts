@@ -4,25 +4,25 @@ import { PermissionRequire } from "./authorize.controller";
 
 export class ProviderController {
 
-    @PermissionRequire("data.bill.get")
+    @PermissionRequire("data.provider.get")
     static async all(req: Request, res: Response, next: NextFunction) {
         return res.json(await ProviderRepository.search(req.query.select as any, req.query.skip as any, req.query.limit as any));
     }
 
-    @PermissionRequire("data.bill.get")
+    @PermissionRequire("data.provider.get")
     static async one(req: Request, res: Response, next: NextFunction) {
         return res.json(await ProviderRepository.findOneBy({
             id: +req.params.id
         }));
     }
 
-    @PermissionRequire("data.bill.get")
+    @PermissionRequire("data.provider.get")
     static async create(req: Request, res: Response, next: NextFunction) {
         const publisher = ProviderRepository.create(req.body);
         return res.json(await ProviderRepository.save(publisher));
     }
 
-    @PermissionRequire("data.bill.get")
+    @PermissionRequire("data.provider.get")
     static async update(req: Request, res: Response, next: NextFunction) {
         const entity = await ProviderRepository.findOne({
             where: {
@@ -38,7 +38,7 @@ export class ProviderController {
         return res.json(await ProviderRepository.save(result));
     }
 
-    @PermissionRequire("data.bill.get")
+    @PermissionRequire("data.provider.get")
     static async delete(req: Request, res: Response, next: NextFunction) {
         const publisher = await ProviderRepository.findOneBy({
             id: +req.params.id
