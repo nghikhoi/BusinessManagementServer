@@ -1,6 +1,6 @@
 import { Employee } from './employee';
 import { Permission } from './permission';
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Position {
@@ -19,7 +19,8 @@ export class Position {
     @OneToOne(type => Position, postion => postion.parent)
     parent: Position;
 
-    @OneToMany(type => Permission, permission => permission.position)
+    @ManyToMany(type => Permission, permission => permission.position)
+    @JoinTable()
     permissions: Permission[];
 
     @OneToMany(type => PositionRecord, positionRecord => positionRecord.position)

@@ -53,7 +53,8 @@ router.get('/info/:product_id', ProductController.getProduct);
  */
 router.get('/search', ProductController.search);
 
-router.post('/:product_id?', ProductController.createOrUpdate); //TODO: create or update
+router.post('/', ProductController.save);
+router.patch('/:product_id?', ProductController.update);
 router.delete('/:product_id', ProductController.delete); //TODO: delete
 
 module.exports = router;

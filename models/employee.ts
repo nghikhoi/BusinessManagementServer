@@ -145,7 +145,7 @@ export class Skill {
     skill_id: string;
 
     @Column()
-    level: number;
+    education: string;
 
     @UpdateDateColumn()
     updated_at: Date;

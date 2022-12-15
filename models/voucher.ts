@@ -73,7 +73,7 @@ export class Voucher {
     code: string;
 
     @Column()
-    type: number;
+    type: number = 0;
 
     @Column()
     release_date: Date;

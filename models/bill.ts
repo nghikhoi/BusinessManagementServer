@@ -56,10 +56,8 @@ export class Bill {
     @Column()
     customer_id: string;
 
-    @Column({
-        type: "bigint"
-    })
-    address_id: number;
+    @Column()
+    address: string;
 
     @ManyToOne(type => Customer, customer => customer.bills)
     @JoinColumn({name: 'customer_id'})
@@ -102,10 +100,9 @@ export class Bill {
     payment: Payment
 
     @Column({
-        nullable: true,
-        type: "bigint"
+        nullable: true
     })
-    bank_id: number
+    bank: string
 
     @ManyToMany(type => Voucher, voucherProfile => voucherProfile.used_on_bill, {
         cascade: true
