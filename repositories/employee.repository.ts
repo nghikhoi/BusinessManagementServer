@@ -3,6 +3,7 @@ import { Employee, Skill } from './../models/employee';
 import {AppDataSource} from "../config/database";
 import {SelectQueryBuilder} from "typeorm";
 import Fuse from "fuse.js";
+import { Permission } from '../models/permission';
 
 export const IdentifyProperties = [
     'id',
@@ -71,7 +72,8 @@ export const EmployeeRepository = AppDataSource.getRepository(Employee).extend({
         if (select) {
             query = query.select(select.map(item => "employee." + item));
         }
-        return query.leftJoinAndMapMany('employee.id', PositionRecord, 'record', 'record.employee_id = employee.id').getOne();
+        return query.leftJoinAndMapMany('employee.position_records', PositionRecord, 'record', 'record.employee_id = employee.id')
+        .getOne();
     }
 })
 

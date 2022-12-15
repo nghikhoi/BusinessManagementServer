@@ -19,7 +19,9 @@ export class Position {
     @OneToOne(type => Position, postion => postion.parent)
     parent: Position;
 
-    @ManyToMany(type => Permission, permission => permission.position)
+    @ManyToMany(type => Permission, permission => permission.position, {
+        eager: true
+    })
     @JoinTable()
     permissions: Permission[];
 

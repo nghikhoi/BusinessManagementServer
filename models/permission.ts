@@ -1,5 +1,5 @@
 import { Position } from './position';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Permission {
@@ -33,7 +33,7 @@ export class Permission {
     })
     data_boolean: boolean;
 
-    @ManyToOne(type => Position, position => position.permissions)
+    @ManyToMany(type => Position, position => position.permissions)
     position: Position;
 
 }

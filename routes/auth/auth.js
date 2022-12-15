@@ -29,7 +29,7 @@ router.post('/login', verifyUserLocal, async (req, res) => {
     const accessTokenSecret = jwtVariable.accessTokenSecret;
 
     const dataForAccessToken = {
-        user: bodyFilter(user, ['id', 'username', 'email']),
+        user: bodyFilter(user, ['id', 'username', 'email', 'permissions']),
     };
     const accessToken = await authMethods.generateToken(
       dataForAccessToken,
