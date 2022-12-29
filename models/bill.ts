@@ -31,16 +31,15 @@ export enum Payment {
 
 }
 
-export enum BillStatus {
-    WAITING = "WAITING",
-    PROCESSING = "PROCESSING",
-    TRANSPORTING = "TRANSPORTING",
-    COMPLETED = "COMPLETED",
-    CANCELED = "CANCELED"
+export enum OrderStatus {
+    PENDING = 'PENDING',
+    CANCELED = 'CANCELED',
+    COMPLETED = 'COMPLETED',
+    RETURNED = 'RETURNED',
 }
 
 @Entity()
-export class Bill {
+export class Order {
 
     @PrimaryGeneratedColumn()
     id: number;
@@ -52,6 +51,17 @@ export class Bill {
 
     @CreateDateColumn()
     created_at: Date;
+
+    @Column({
+        nullable: true
+    })
+    completed_at: Date;
+
+    @Column()
+    net_price: number;
+
+    @Column()
+    VAT_price: number;
 
     @Column()
     customer_id: string;
@@ -72,16 +82,16 @@ export class Bill {
 
     @Column({
         type: "enum",
-        enum: BillStatus,
-        default: BillStatus.WAITING
+        enum: OrderStatus,
+        default: OrderStatus.PENDING
     })
-    status: BillStatus
+    status: OrderStatus
 
-    @OneToMany(() => BillDetail, billDetail => billDetail.bill, {
+    @OneToMany(() => OrderItem, billDetail => billDetail.bill, {
         eager: true,
         cascade: true
     })
-    bill_details: BillDetail[]
+    bill_details: OrderItem[]
 
     total_details: number;
 
@@ -123,10 +133,10 @@ export class Bill {
 }
 
 @Entity()
-export class BillDetail {
+export class OrderItem {
 
     @PrimaryColumn()
-    bill_id: number;
+    order_id: number;
 
     @PrimaryColumn()
     product_id: number;
@@ -145,10 +155,10 @@ export class BillDetail {
     })
     quantity: number;
 
-    @ManyToOne(type => Bill, bill => bill.bill_details)
+    @ManyToOne(type => Order, bill => bill.bill_details)
     @JoinColumn({
         name: "bill_id"
     })
-    bill: Bill
+    bill: Order
 
 }

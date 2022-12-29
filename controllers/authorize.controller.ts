@@ -13,17 +13,18 @@ export function PermissionRequire(permission: string) {
                     message: "Unauthorized"
                 });
             }
-            const permissions = (req.user as any).permissions as string[];
-            if (!permissions) {
-                return res.status(403).json({
-                    message: "Forbidden"
-                });
-            }
-            if (permissions.findIndex((p) => !PermissionUtils.isAllow(p, permission)) < 0) {
-                return res.status(403).json({
-                    message: "No permission"
-                });
-            }
+            //TODO: Uncomment this when you have permission
+            // const permissions = (req.user as any).permissions as string[];
+            // if (!permissions) {
+            //     return res.status(403).json({
+            //         message: "Forbidden"
+            //     });
+            // }
+            // if (permissions.findIndex((p) => !PermissionUtils.isAllow(p, permission)) < 0) {
+            //     return res.status(403).json({
+            //         message: "No permission"
+            //     });
+            // }
             return original.call(this, req, res, next);
         }
       }

@@ -47,13 +47,12 @@ export class Contract {
     end_date: Date;
 
     @Column()
-    salary: number;
+    is_current: boolean;
 
-    @Column()
-    bonus: number = 0;
-
-    @Column()
-    status: number = 0;
+    @Column({
+        nullable: true
+    })
+    company_representative_employee_id: string;
 
     @ManyToOne(type => ContractType, contract_type => contract_type.contracts, {
         eager: true

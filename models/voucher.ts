@@ -10,7 +10,7 @@ import {
     PrimaryGeneratedColumn,
     TableInheritance
 } from "typeorm";
-import {Bill} from "./bill";
+import {Order} from "./bill";
 
 export enum DiscountType {
     PERCENTAGE = 'PERCENTAGE',
@@ -85,7 +85,7 @@ export class Voucher {
     @JoinColumn({name: "type"})
     voucher_type: VoucherType;
 
-    @ManyToMany(type => Bill, bill => bill.used_vouchers)
-    used_on_bill: Bill[]
+    @ManyToMany(type => Order, bill => bill.used_vouchers)
+    used_on_bill: Order[]
 
 }

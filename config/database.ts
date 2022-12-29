@@ -1,5 +1,5 @@
 import { Product, ProductCategory } from './../models/product';
-import { Bill, BillDetail } from './../models/bill';
+import { Order, OrderItem } from './../models/bill';
 import { Provider } from './../models/provider';
 import { Voucher, VoucherType } from './../models/voucher';
 import { Message, Feedback, ReplyFeedback } from './../models/message';
@@ -111,8 +111,8 @@ export const EntitySchemas = [
     Product,
     VoucherType,
     Voucher,
-    BillDetail,
-    Bill,
+    OrderItem,
+    Order,
 
     PositionRecord,
     Employee,

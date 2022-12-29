@@ -1,5 +1,6 @@
-import { Bill } from './bill';
-import { SalaryRecord, OvertimeRecord } from './salary';
+import { BonusRecord } from './bonus';
+import { Order } from './bill';
+import { SalaryRecord, OvertimeRecord, OvertimeOverview } from './salary';
 import { Position, PositionRecord } from './position';
 import { SkillType } from './skill';
 import { Contract } from './contract';
@@ -99,6 +100,11 @@ export class Employee {
     })
     citizen_id: string;
 
+    @Column({
+        nullable: true
+    })
+    termination_date: Date;
+
     @OneToMany(type => PositionRecord, position_records => position_records.employee)
     position_records: PositionRecord[];
 
@@ -130,8 +136,20 @@ export class Employee {
     })
     overtime_records: OvertimeRecord[];
 
-    @OneToMany(type => Bill, bill => bill.create_employee)
-    bills: Bill[];
+    @OneToMany(type => Order, bill => bill.create_employee)
+    bills: Order[];
+
+    @OneToMany(type => BonusRecord, bonus_record => bonus_record.employee)
+    bonus_records: BonusRecord[];
+
+    @OneToMany(type => OvertimeOverview, overtime_overview => overtime_overview.employee)
+    overtime_overviews: OvertimeOverview[];
+
+}
+
+export enum SkillLevel {
+
+    Unrated, Acceptable, Good, Excellent
 
 }
 
@@ -144,8 +162,12 @@ export class Skill {
     @PrimaryColumn()
     skill_id: string;
 
-    @Column()
-    education: string;
+    @Column({
+        type: "enum",
+        enum: SkillLevel,
+        default: SkillLevel.Unrated,
+    })
+    level: SkillLevel;
 
     @UpdateDateColumn()
     updated_at: Date;

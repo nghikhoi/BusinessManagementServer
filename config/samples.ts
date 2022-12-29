@@ -13,7 +13,7 @@ import { PermissionUtils } from '../utils/permission.utils';
 import { Voucher, VoucherType } from '../models/voucher';
 import { Customer } from '../models/customer';
 import { OvertimeRecord, SalaryRecord } from '../models/salary';
-import { Bill, BillDetail, BillStatus, Payment } from '../models/bill';
+import { Order, OrderItem, BillStatus, Payment } from '../models/bill';
 
 async function InitCommon() {
     //region Provider
@@ -506,9 +506,9 @@ async function InitCommon() {
     //endregion
 
     //region Bill
-    const billRepo = AppDataSource.getRepository(Bill);
+    const billRepo = AppDataSource.getRepository(Order);
 
-    const bill1: Bill = billRepo.create({
+    const bill1: Order = billRepo.create({
         customer: customer1,
         create_employee: employee1,
         bank: '123456789',
@@ -517,7 +517,7 @@ async function InitCommon() {
         address: 'Address 1',
     });
 
-    const bill2: Bill = billRepo.create({
+    const bill2: Order = billRepo.create({
         customer: customer2,
         create_employee: employee2,
         bank: '123456789',
@@ -526,7 +526,7 @@ async function InitCommon() {
         address: 'Address 2',
     });
 
-    const bill3: Bill = billRepo.create({
+    const bill3: Order = billRepo.create({
         customer: customer3,
         create_employee: employee3,
         bank: '123456789',
@@ -540,37 +540,37 @@ async function InitCommon() {
     //endregion
 
     //region BillDetail
-    const billDetailRepo = AppDataSource.getRepository(BillDetail);
+    const billDetailRepo = AppDataSource.getRepository(OrderItem);
 
-    const billDetail1: BillDetail = billDetailRepo.create({
+    const billDetail1: OrderItem = billDetailRepo.create({
         bill: bill1,
         product: product1,
         quantity: 1,
         unit_price: 1000000,
     });
 
-    const billDetail2: BillDetail = billDetailRepo.create({
+    const billDetail2: OrderItem = billDetailRepo.create({
         bill: bill1,
         product: product2,
         quantity: 2,
         unit_price: 2000000,
     });
 
-    const billDetail3: BillDetail = billDetailRepo.create({
+    const billDetail3: OrderItem = billDetailRepo.create({
         bill: bill1,
         product: product3,
         quantity: 3,
         unit_price: 3000000,
     });
 
-    const billDetail4: BillDetail = billDetailRepo.create({
+    const billDetail4: OrderItem = billDetailRepo.create({
         bill: bill2,
         product: product1,
         quantity: 1,
         unit_price: 1000000,
     });
 
-    const billDetail5: BillDetail = billDetailRepo.create({
+    const billDetail5: OrderItem = billDetailRepo.create({
         bill: bill3,
         product: product2,
         quantity: 2,

@@ -1,7 +1,7 @@
 import {AppDataSource} from "../config/database";
 import {Feedback, Message, ReplyFeedback} from "../models/message";
 import {SelectQueryBuilder} from "typeorm";
-import {Bill} from "../models/bill";
+import {Order} from "../models/bill";
 
 export const MessageRepository = AppDataSource.getRepository(Message);
 export const FeedbackRepository = AppDataSource.getRepository(Feedback).extend({
