@@ -1,5 +1,5 @@
-const {ValidateProperty} = require("../middleware/validateproperty");
-const {UserSearch, ProfileUpdateRequest} = require("../../schema/user.schema");
+const {ValidateProperty} = require('../middleware/validateproperty');
+const {UserSearch, ProfileUpdateRequest} = require('../../schema/user.schema');
 const router = require('express').Router();
 const CustomerController = require('../../controllers/customer.controller').CustomerController;
 

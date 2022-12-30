@@ -10,7 +10,7 @@ import {
     PrimaryGeneratedColumn,
     TableInheritance
 } from "typeorm";
-import {Order} from "./bill";
+import {Order} from "./order";
 
 export enum DiscountType {
     PERCENTAGE = 'PERCENTAGE',
@@ -59,7 +59,7 @@ export class VoucherType {
     @Column({
         nullable: true
     })
-    require_min_value: number;
+    require_min_net: number;
 
     @OneToMany(type => Voucher, voucher => voucher.voucher_type)
     vouchers: Voucher[];
@@ -80,7 +80,7 @@ export class Voucher {
 
     @Column()
     expire_date: Date;
-    
+
     @ManyToOne(type => VoucherType, voucherType => voucherType.vouchers)
     @JoinColumn({name: "type"})
     voucher_type: VoucherType;

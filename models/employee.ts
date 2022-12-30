@@ -1,13 +1,26 @@
-import { BonusRecord } from './bonus';
-import { Order } from './bill';
-import { SalaryRecord, OvertimeRecord, OvertimeOverview } from './salary';
-import { Position, PositionRecord } from './position';
-import { SkillType } from './skill';
-import { Contract } from './contract';
-import { AfterLoad, BeforeInsert, BeforeUpdate, Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { Department } from './department';
-import { randomBytes } from 'crypto';
-import { hashSync } from '../routes/auth/auth.methods';
+import {BonusRecord} from './bonus';
+import {Order} from './order';
+import {SalaryRecord, OvertimeRecord, OvertimeOverview} from './salary';
+import {Position, PositionRecord} from './position';
+import {SkillType} from './skill';
+import {Contract} from './contract';
+import {
+    AfterLoad,
+    BeforeInsert,
+    BeforeUpdate,
+    Column,
+    Entity,
+    JoinColumn,
+    ManyToOne,
+    OneToMany,
+    OneToOne,
+    PrimaryColumn,
+    PrimaryGeneratedColumn,
+    UpdateDateColumn
+} from "typeorm";
+import {Department} from './department';
+import {randomBytes} from 'crypto';
+import {hashSync} from '../routes/auth/auth.methods';
 
 export enum Gender {
     MALE = 'male',
@@ -142,9 +155,6 @@ export class Employee {
     @OneToMany(type => BonusRecord, bonus_record => bonus_record.employee)
     bonus_records: BonusRecord[];
 
-    @OneToMany(type => OvertimeOverview, overtime_overview => overtime_overview.employee)
-    overtime_overviews: OvertimeOverview[];
-
 }
 
 export enum SkillLevel {
@@ -173,13 +183,13 @@ export class Skill {
     updated_at: Date;
 
     @ManyToOne(type => Employee, employee => employee.skills)
-    @JoinColumn({ name: "employee_id" })
+    @JoinColumn({name: "employee_id"})
     employee: Employee;
 
     @ManyToOne(type => SkillType, skill => skill.employees, {
         eager: true
     })
-    @JoinColumn({ name: "skill_id" })
+    @JoinColumn({name: "skill_id"})
     skill: SkillType;
-    
+
 }

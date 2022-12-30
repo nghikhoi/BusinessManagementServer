@@ -2,6 +2,12 @@ import { Employee } from './employee';
 import { Permission } from './permission';
 import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 
+export enum PositionPermission {
+
+    ALL, MAN_ORDERS, MAN_SALES, VIEW_SALES, VIEW_HR, MAN_HR, NONE
+
+}
+
 @Entity()
 export class Position {
 
@@ -16,14 +22,15 @@ export class Position {
     })
     description: string;
 
-    @OneToOne(type => Position, postion => postion.parent)
-    parent: Position;
-
-    @ManyToMany(type => Permission, permission => permission.position, {
-        eager: true
+    @Column({
+        type: "enum",
+        enum: PositionPermission,
+        default: PositionPermission.NONE
     })
-    @JoinTable()
-    permissions: Permission[];
+    permission: PositionPermission;
+
+    @Column()
+    supplement_salary: number;
 
     @OneToMany(type => PositionRecord, positionRecord => positionRecord.position)
     position_records: PositionRecord[];
@@ -44,6 +51,8 @@ export class PositionRecord {
 
     @Column()
     position_id: number;
+
+    is_current: boolean; //TODO
 
     @ManyToOne(type => Position, position => position.position_records)
     position: Position;

@@ -1,9 +1,7 @@
 import { Product, ProductCategory } from './../models/product';
-import { Order, OrderItem } from './../models/bill';
+import { Order, OrderItem } from '../models/order';
 import { Provider } from './../models/provider';
 import { Voucher, VoucherType } from './../models/voucher';
-import { Message, Feedback, ReplyFeedback } from './../models/message';
-import { Audio, Image, Document, Video, Other } from './../models/file';
 import { Permission } from './../models/permission';
 import { Department } from './../models/department';
 import { Contract, ContractType } from './../models/contract';
@@ -26,6 +24,9 @@ import {
 } from "../variables/database.variable"
 
 import {snakeCase} from "typeorm/util/StringUtils";
+import {BonusRecord, BonusType} from "../models/bonus";
+import {BusinessConfig} from "../models/config";
+import {Video, Audio, Image, Document, Other} from "../models/file";
 
 class LowercaseNamingStrategy extends DefaultNamingStrategy implements NamingStrategyInterface {
 
@@ -100,11 +101,12 @@ if (DATABASE_SOCKET_PATH) {
 }
 
 export const EntitySchemas = [
-    Permission,
+    BusinessConfig,
     Position,
     SkillType,
     ContractType,
     Contract,
+    BonusType,
 
     Provider,
     ProductCategory,
@@ -117,6 +119,7 @@ export const EntitySchemas = [
     PositionRecord,
     Employee,
     Skill,
+    BonusRecord,
     OvertimeRecord,
     SalaryRecord,
     Customer,
@@ -128,12 +131,6 @@ export const EntitySchemas = [
     , Image
     , Document
     , Other
-    
-
-    //Message
-    , Message
-    , Feedback
-    , ReplyFeedback
 ];
 
 export const AppDataSource = new DataSource({

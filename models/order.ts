@@ -44,11 +44,6 @@ export class Order {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({
-        nullable: true
-    })
-    transport_id: string;
-
     @CreateDateColumn()
     created_at: Date;
 
@@ -57,11 +52,10 @@ export class Order {
     })
     completed_at: Date;
 
-    @Column()
     net_price: number;
 
     @Column()
-    VAT_price: number;
+    VAT_rate: number;
 
     @Column()
     customer_id: string;

@@ -8,7 +8,7 @@ const verify = (strategy) => {
         return next(err);
       }
       if (!user) {
-        let json = {};
+        const json = {};
         json[routeVariable.AUTHENTICATED_FIELD] = false;
         return res.json(json);
       }
@@ -16,7 +16,7 @@ const verify = (strategy) => {
       next();
     })(req, res, next);
   };
-}
+};
 
 exports.verifyUserLocal = verify('local');
 

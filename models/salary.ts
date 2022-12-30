@@ -28,37 +28,22 @@ export class OvertimeRecord {
 
 }
 
-@Entity()
-export class OvertimeOverview {
+export class OvertimeOverview { //TODO
 
-    @PrimaryColumn()
     employee_id: string;
 
-    @PrimaryColumn()
     month: number;
 
-    @PrimaryColumn()
     year: number;
 
-    @Column()
     num_of_overtime_days: number;
 
-    @Column()
     avg_overtime_duration: number;
 
-    @Column()
     total_overtime_pay: number;
 
-    @ManyToOne(type => Employee, employee => employee.overtime_overviews)
-    @JoinColumn({ name: "employee_id" })
     employee: Employee;
 
-    @OneToMany(type => OvertimeRecord, overtime_record => overtime_record.employee)
-    @JoinColumn([
-        { name: "employee_id", referencedColumnName: "employee_id" },
-        { name: "month", referencedColumnName: "month" },
-        { name: "year", referencedColumnName: "year" }
-    ])
     overtime_records: OvertimeRecord[];
 
 }
@@ -80,6 +65,9 @@ export class SalaryRecord {
 
     @Column()
     bonus_salary: number;
+
+    @Column()
+    supplement_salary: number;
 
     @Column()
     total_overtime_pay: number;

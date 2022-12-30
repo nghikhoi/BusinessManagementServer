@@ -1,6 +1,6 @@
-import { BillStatus, OrderItem } from './../models/bill';
+import { OrderItem } from '../models/order';
 import {AppDataSource} from "../config/database";
-import {Order} from "../models/bill";
+import {Order} from "../models/order";
 import {SelectQueryBuilder} from "typeorm";
 import {ProductRepository} from "./product.repository";
 

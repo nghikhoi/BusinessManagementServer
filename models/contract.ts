@@ -46,8 +46,8 @@ export class Contract {
     @Column()
     end_date: Date;
 
-    @Column()
-    is_current: boolean;
+/*    @Column()
+    is_current: boolean;*/ //TODO
 
     @Column({
         nullable: true

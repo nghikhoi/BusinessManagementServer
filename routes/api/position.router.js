@@ -1,5 +1,5 @@
-const { PositionController } = require("../../controllers/position.controller");
-const router = require("express").Router();
+const {PositionController} = require('../../controllers/position.controller');
+const router = require('express').Router();
 
 router.get('/search', PositionController.getAll);
 router.get('/:position_id(\\d+)', PositionController.getOne);

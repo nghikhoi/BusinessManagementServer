@@ -1,5 +1,7 @@
-import { Column, JoinColumn, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm';
+import {Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn} from 'typeorm';
 import { Employee } from './employee';
+
+@Entity()
 export class BonusType {
 
     @PrimaryColumn()
@@ -20,6 +22,7 @@ export class BonusType {
 
 }
 
+@Entity()
 export class BonusRecord {
 
     @PrimaryColumn()
@@ -35,7 +38,7 @@ export class BonusRecord {
     bonus_type_id: number;
 
     @Column()
-    bonus: number;
+    amount: number;
 
     @ManyToOne(type => Employee, employee => employee.bonus_records)
     @JoinColumn({ name: "employee_id" })

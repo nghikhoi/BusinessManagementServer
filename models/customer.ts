@@ -1,6 +1,5 @@
 import { Gender } from './employee';
-import { Message } from './message';
-import { Order } from './bill';
+import { Order } from './order';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
@@ -21,9 +20,12 @@ export class Customer {
     phone: string;
 
     @Column({
-        nullable: true,
+        type: "enum",
+        enum: Gender,
+        default: Gender.OTHER,
+        nullable: false
     })
-    gender: Gender;
+    gender: Gender
 
     @Column({
         nullable: true,
@@ -39,8 +41,5 @@ export class Customer {
 
     @OneToMany(type => Order, bill => bill.customer)
     bills: Order[];
-
-    @OneToMany(type => Message, message => message.customer)
-    messages: Message[];
 
 }

@@ -1,8 +1,7 @@
-import { VoucherType } from './voucher';
-import { Message, Feedback } from './message';
-import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { Provider } from './provider';
-import { OrderItem } from './bill';
+import {VoucherType} from './voucher';
+import {Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm";
+import {Provider} from './provider';
+import {OrderItem} from './order';
 
 @Entity()
 export class ProductCategory {
@@ -62,9 +61,6 @@ export class Product {
         eager: true
     })
     provider: Provider;
-
-    @OneToMany(type => Feedback, feedback => feedback.product)
-    feedbacks: Feedback[];
 
     @ManyToMany(type => VoucherType, voucher_profile => voucher_profile.require_product)
     required_vouchers: VoucherType[];

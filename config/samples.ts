@@ -1,5 +1,5 @@
 import { Contract, ContractType } from './../models/contract';
-import { Employee, Gender, Skill } from './../models/employee';
+import {Employee, Gender, Skill, SkillLevel} from './../models/employee';
 import { Department } from './../models/department';
 import { Product, ProductCategory } from './../models/product';
 import { Position, PositionRecord } from './../models/position';
@@ -8,12 +8,11 @@ import { SkillType } from './../models/skill';
 import { Provider } from './../models/provider';
 import { AppDataSource, EntitySchemas } from './database';
 import {init} from "../variables/run.variable";
-import { Image } from '../models/file';
 import { PermissionUtils } from '../utils/permission.utils';
 import { Voucher, VoucherType } from '../models/voucher';
 import { Customer } from '../models/customer';
 import { OvertimeRecord, SalaryRecord } from '../models/salary';
-import { Order, OrderItem, BillStatus, Payment } from '../models/bill';
+import {Order, OrderItem, OrderStatus, Payment} from '../models/order';
 
 async function InitCommon() {
     //region Provider
@@ -46,7 +45,7 @@ async function InitCommon() {
         description: 'Skill 1'
     });
 
-    const skill2: SkillType = skillRepo.create({    
+    const skill2: SkillType = skillRepo.create({
         name: 'Skill 2',
         description: 'Skill 2'
     });
@@ -61,7 +60,7 @@ async function InitCommon() {
     //endregion
 
     //region Permission
-    const permissionRepo = AppDataSource.getRepository(Permission);
+    /*const permissionRepo = AppDataSource.getRepository(Permission);
 
     const permissions: Permission[] = await Promise.all(EntitySchemas.map(schema => schema.name.toLowerCase().replace('record', ''))
     .map((p) => {
@@ -75,7 +74,7 @@ async function InitCommon() {
             });
         return await permissionRepo.save(permission);
     }));
-    console.log('Permission created');
+    console.log('Permission created');*/
     //endregion
 
     //region Position
@@ -88,13 +87,11 @@ async function InitCommon() {
 
     const position2: Position = positionRepo.create({
         name: 'Supporter',
-        permissions: permissions.filter(p => p.data_string.search('customer|employee|product|productcategory|voucher') > -1),
         description: 'Position 2'
     });
 
     const position3: Position = positionRepo.create({
         name: 'Admin',
-        permissions: permissions,
         description: 'Position 3'
     });
 
@@ -238,19 +235,19 @@ async function InitCommon() {
     const employeeSkill1: Skill = employeeSkillRepo.create({
         employee: employee1,
         skill: skill1,
-        education: 'Education 1',
+        level: SkillLevel.Unrated,
     });
 
     const employeeSkill2: Skill = employeeSkillRepo.create({
         employee: employee2,
         skill: skill2,
-        education: 'Education 2',
+        level: SkillLevel.Unrated,
     });
 
     const employeeSkill3: Skill = employeeSkillRepo.create({
         employee: employee3,
         skill: skill3,
-        education: 'Education 3',
+        level: SkillLevel.Unrated,
     });
 
     await employeeSkillRepo.save([employeeSkill1, employeeSkill2, employeeSkill3]);
@@ -318,17 +315,17 @@ async function InitCommon() {
     await overtimeRecordRepo.save([overtimeRecord1, overtimeRecord2, overtimeRecord3]);
     console.log('OvertimeRecord created');
     //endregion
-    
+
     //region SalaryRecord
     const salaryRecordRepo = AppDataSource.getRepository(SalaryRecord);
-    
+
     const salaryRecord1: SalaryRecord = salaryRecordRepo.create({
         employee: employee1,
         month: 1,
         year: 2020,
         basic_salary: 1000000,
-        bonus_type: 1,
-        bonus: 1100000,
+        bonus_salary: 1100000,
+        supplement_salary: 1200000,
     });
 
     const salaryRecord2: SalaryRecord = salaryRecordRepo.create({
@@ -336,8 +333,8 @@ async function InitCommon() {
         month: 2,
         year: 2020,
         basic_salary: 2000000,
-        bonus_type: 2,
-        bonus: 2200000,
+        bonus_salary: 2200000,
+        supplement_salary: 2400000,
     });
 
     const salaryRecord3: SalaryRecord = salaryRecordRepo.create({
@@ -345,8 +342,8 @@ async function InitCommon() {
         month: 3,
         year: 2020,
         basic_salary: 3000000,
-        bonus_type: 3,
-        bonus: 3300000,
+        bonus_salary: 3300000,
+        supplement_salary: 3600000,
     });
 
     await salaryRecordRepo.save([salaryRecord1, salaryRecord2, salaryRecord3]);
@@ -392,8 +389,6 @@ async function InitCommon() {
         employee: employee1,
         start_date: new Date(),
         end_date: new Date(),
-        salary: 1000000,
-        bonus: 100000,
     });
 
     const contract2: Contract = contractRepo.create({
@@ -401,8 +396,6 @@ async function InitCommon() {
         employee: employee2,
         start_date: new Date(),
         end_date: new Date(),
-        salary: 2000000,
-        bonus: 200000,
     });
 
     const contract3: Contract = contractRepo.create({
@@ -410,8 +403,6 @@ async function InitCommon() {
         employee: employee3,
         start_date: new Date(),
         end_date: new Date(),
-        salary: 3000000,
-        bonus: 300000,
     });
 
     await contractRepo.save([contract1, contract2, contract3]);
@@ -482,7 +473,7 @@ async function InitCommon() {
         address: 'Address 1',
         birthday: new Date(),
     });
-    
+
     const customer2: Customer = customerRepo.create({
         name: 'Customer 2',
         phone: '0123451356789',
@@ -513,7 +504,7 @@ async function InitCommon() {
         create_employee: employee1,
         bank: '123456789',
         payment: Payment.CASH,
-        status: BillStatus.COMPLETED,
+        status: OrderStatus.COMPLETED,
         address: 'Address 1',
     });
 
@@ -522,7 +513,7 @@ async function InitCommon() {
         create_employee: employee2,
         bank: '123456789',
         payment: Payment.CASH,
-        status: BillStatus.COMPLETED,
+        status: OrderStatus.COMPLETED,
         address: 'Address 2',
     });
 
@@ -531,7 +522,7 @@ async function InitCommon() {
         create_employee: employee3,
         bank: '123456789',
         payment: Payment.CASH,
-        status: BillStatus.COMPLETED,
+        status: OrderStatus.COMPLETED,
         address: 'Address 3',
     });
 
@@ -579,48 +570,6 @@ async function InitCommon() {
 
     await billDetailRepo.save([billDetail1, billDetail2, billDetail3, billDetail4, billDetail5]);
     console.log('BillDetail created');
-    //endregion
-
-    //region Image
-    const imageRepo = AppDataSource.getRepository(Image);
-
-    const image1 = imageRepo.create({
-        id: "a4392290-15c6-4f15-bd2a-aca9d2b8ef42",
-        name: "sample.png",
-        path: "a4392290-15c6-4f15-bd2a-aca9d2b8ef42.png",
-        height: 100,
-        width: 100,
-    });
-    await imageRepo.save(image1);
-
-    const image2 = imageRepo.create({
-        id: "a1f49fb4-6ad8-4e07-99e8-d5d9893a985c",
-        name: "sample2.png",
-        path: "a1f49fb4-6ad8-4e07-99e8-d5d9893a985c.png",
-        height: 100,
-        width: 100,
-    });
-    await imageRepo.save(image2);
-
-    const images = await Promise.all([
-        '2930ce29-27c3-4ec7-9dcb-343911559f5a',
-        'a163bf15-3ee7-4db7-b9f9-02dee0423f35',
-        '6afc5d1e-0383-45aa-a92f-29825a7008ab',
-        '64558f9e-2325-4ca4-8307-62158ae8f0f2',
-        'bd61dc3b-b2be-46a3-8389-5a051ab737d9',
-        '87126613-a7ff-4278-8c06-cd40ace3db5c',
-        '3461f81d-24f5-4247-aa3d-6bf348cd2ca3',
-        '03f0f504-16cf-4f80-b4bc-ba09d8bcc1d0',
-        '7327feb4-108b-4067-85ac-1913c76602ba',
-        '299313f9-d6d8-4513-843f-834181771684',
-        '025532b0-9d2c-4e1c-90a6-25285ccc73da'
-    ].map(id => imageRepo.save(imageRepo.create({
-        id: id,
-        name: `${id}.png`,
-        path: `${id}.png`,
-        height: 100,
-        width: 100,
-    }))));
     //endregion
 }
 

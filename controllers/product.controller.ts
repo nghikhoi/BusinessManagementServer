@@ -1,18 +1,8 @@
 import { ProductRepository } from './../repositories/product.repository';
 import {NextFunction, Request, Response} from "express"
-import {FeedbackRepository} from "../repositories/feedback.repository";
 import { PermissionRequire } from './authorize.controller';
 
 export class ProductController {
-
-    @PermissionRequire("data.product.get")
-    static async getFeedback(req: Request, res: Response, next: NextFunction) {
-        return res.json(await FeedbackRepository.find({
-            where: {
-                id: req.params.product_id
-            }
-        }));
-    }
 
     @PermissionRequire("data.product.get")
     static async search(request: Request, response: Response, next: NextFunction) {

@@ -1,5 +1,5 @@
-const {StatisticController} = require("../../controllers/statistic.controller");
-const {VoucherController} = require("../../controllers/voucher.controller");
+const {StatisticController} = require('../../controllers/statistic.controller');
+const {VoucherController} = require('../../controllers/voucher.controller');
 const router = require('express').Router();
 
 // router.get('/profile/:profile_id', VoucherController.getProfile)

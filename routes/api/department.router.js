@@ -1,6 +1,6 @@
-const { DepartmentController } = require("../../controllers/department.controller");
-const { PositionController } = require("../../controllers/position.controller");
-const router = require("express").Router();
+const {DepartmentController} = require('../../controllers/department.controller');
+const {PositionController} = require('../../controllers/position.controller');
+const router = require('express').Router();
 
 router.get('/search', DepartmentController.getAll);
 router.get('/:department_id(\\d+)', DepartmentController.getOne);

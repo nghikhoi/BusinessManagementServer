@@ -1,6 +1,4 @@
 import {ChildEntity, Column, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn, TableInheritance} from "typeorm";
-import {Message} from "./message";
-import {Provider} from "./provider";
 
 export abstract class File {
     @PrimaryGeneratedColumn("uuid")
@@ -39,18 +37,12 @@ export class Image extends Media {
         default: 'image/*'
     })
     mimetype: string;
-
-    @ManyToOne(type => Message, message => message.images)
-    message: Message;
 }
 
 @Entity()
 export class Video extends Media {
     @Column()
     duration: number;
-
-    @ManyToOne(type => Message, message => message.videos)
-    message: Message;
 }
 
 @Entity()

@@ -1,5 +1,5 @@
-const {ProviderController} = require("../../controllers/provider.controller");
-const router = require("express").Router();
+const {ProviderController} = require('../../controllers/provider.controller');
+const router = require('express').Router();
 
 /**
  * @openapi

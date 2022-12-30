@@ -55,7 +55,7 @@ router.get('/search', ProductController.search);
 
 router.post('/', ProductController.save);
 router.patch('/:product_id?', ProductController.update);
-router.delete('/:product_id', ProductController.delete); //TODO: delete
+router.delete('/:product_id', ProductController.delete); // TODO: delete
 
 module.exports = router;
 
