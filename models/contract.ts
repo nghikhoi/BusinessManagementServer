@@ -1,11 +1,11 @@
-import { Employee } from './employee';
-import { Column, Entity, ManyToOne, OneToMany, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import {Employee} from './employee';
+import {Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn, PrimaryGeneratedColumn} from "typeorm";
 
 @Entity()
 export class ContractType {
 
     @PrimaryColumn()
-    id: string;
+    id: number;
 
     @Column()
     name: string;
@@ -35,6 +35,12 @@ export class Contract {
     @Column()
     name: string;
 
+    @Column()
+    employee_id: string;
+
+    @Column()
+    type_id: number;
+
     @Column({
         nullable: true
     })
@@ -46,8 +52,8 @@ export class Contract {
     @Column()
     end_date: Date;
 
-/*    @Column()
-    is_current: boolean;*/ //TODO
+    /*    @Column()
+        is_current: boolean;*/ //TODO
 
     @Column({
         nullable: true
@@ -57,9 +63,11 @@ export class Contract {
     @ManyToOne(type => ContractType, contract_type => contract_type.contracts, {
         eager: true
     })
+    @JoinColumn({ name: "type_id" })
     type: ContractType;
 
     @ManyToOne(type => Employee, employee => employee.contracts)
+    @JoinColumn({name: "employee_id"})
     employee: Employee;
 
 }

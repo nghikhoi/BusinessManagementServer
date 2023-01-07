@@ -5,7 +5,7 @@
   "scripts": {
     "build": "npx tsc",
     "init": "npm run build && node ./dist/app.js -i true",
-    "start": "node ./dist/app.js",
+    "start": "npm run build && node ./dist/app.js",
     "gcp-build": "npm run build",
     "prod": "npm run build && npm run start",
     "dev": "concurrently \"npx tsc --watch\" \"nodemon -q ./dist/app.js\""

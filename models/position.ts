@@ -1,12 +1,16 @@
-import { Employee } from './employee';
-import { Permission } from './permission';
-import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
-
-export enum PositionPermission {
-
-    ALL, MAN_ORDERS, MAN_SALES, VIEW_SALES, VIEW_HR, MAN_HR, NONE
-
-}
+import {Employee} from './employee';
+import {
+    Column,
+    Entity,
+    JoinColumn,
+    JoinTable,
+    ManyToMany,
+    ManyToOne,
+    OneToMany,
+    OneToOne,
+    PrimaryColumn,
+    PrimaryGeneratedColumn
+} from "typeorm";
 
 @Entity()
 export class Position {
@@ -22,15 +26,38 @@ export class Position {
     })
     description: string;
 
-    @Column({
-        type: "enum",
-        enum: PositionPermission,
-        default: PositionPermission.NONE
-    })
-    permission: PositionPermission;
-
     @Column()
     supplement_salary: number;
+
+    @Column()
+    can_view_orders: boolean = false;
+
+    @Column()
+    can_manage_orders: boolean = false;
+
+    @Column()
+    can_view_customers: boolean = false;
+
+    @Column()
+    can_manage_customers: boolean = false;
+
+    @Column()
+    can_view_sales: boolean = false;
+
+    @Column()
+    can_manage_sales: boolean = false;
+
+    @Column()
+    can_view_hr: boolean = false;
+
+    @Column()
+    can_manage_hr: boolean = false;
+
+    @Column()
+    can_view_config: boolean = false;
+
+    @Column()
+    can_manage_config: boolean = false;
 
     @OneToMany(type => PositionRecord, positionRecord => positionRecord.position)
     position_records: PositionRecord[];
@@ -58,7 +85,7 @@ export class PositionRecord {
     position: Position;
 
     @ManyToOne(type => Employee, employee => employee.position_records)
-    @JoinColumn({ name: "employee_id" })
+    @JoinColumn({name: "employee_id"})
     employee: Employee;
 
 }

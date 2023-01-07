@@ -1,21 +1,19 @@
-import { Contract, ContractType } from './../models/contract';
+import {Contract, ContractType} from './../models/contract';
 import {Employee, Gender, Skill, SkillLevel} from './../models/employee';
-import { Department } from './../models/department';
-import { Product, ProductCategory } from './../models/product';
-import { Position, PositionRecord } from './../models/position';
-import { Permission } from './../models/permission';
-import { SkillType } from './../models/skill';
-import { Provider } from './../models/provider';
-import { AppDataSource, EntitySchemas } from './database';
+import {Department} from './../models/department';
+import {Product, ProductCategory} from './../models/product';
+import {Position, PositionRecord} from './../models/position';
+import {SkillType} from './../models/skill';
+import {Provider} from '../models/provider';
+import {AppDataSource, EntitySchemas} from './database';
 import {init} from "../variables/run.variable";
-import { PermissionUtils } from '../utils/permission.utils';
-import { Voucher, VoucherType } from '../models/voucher';
-import { Customer } from '../models/customer';
-import { OvertimeRecord, SalaryRecord } from '../models/salary';
+import {Voucher, VoucherType} from '../models/voucher';
+import {Customer} from '../models/customer';
+import {OvertimeRecord, SalaryRecord} from '../models/salary';
 import {Order, OrderItem, OrderStatus, Payment} from '../models/order';
 
 async function InitCommon() {
-    //region Provider
+    /*//region Provider
     const providerRepo = AppDataSource.getRepository(Provider);
 
     const provider1: Provider = providerRepo.create({
@@ -60,7 +58,7 @@ async function InitCommon() {
     //endregion
 
     //region Permission
-    /*const permissionRepo = AppDataSource.getRepository(Permission);
+    /!*const permissionRepo = AppDataSource.getRepository(Permission);
 
     const permissions: Permission[] = await Promise.all(EntitySchemas.map(schema => schema.name.toLowerCase().replace('record', ''))
     .map((p) => {
@@ -74,7 +72,7 @@ async function InitCommon() {
             });
         return await permissionRepo.save(permission);
     }));
-    console.log('Permission created');*/
+    console.log('Permission created');*!/
     //endregion
 
     //region Position
@@ -570,7 +568,7 @@ async function InitCommon() {
 
     await billDetailRepo.save([billDetail1, billDetail2, billDetail3, billDetail4, billDetail5]);
     console.log('BillDetail created');
-    //endregion
+    //endregion*/
 }
 
 export async function InitSamples() {

@@ -52,10 +52,8 @@ export class Order {
     })
     completed_at: Date;
 
-    net_price: number;
-
     @Column()
-    VAT_rate: number;
+    vat_rate: number;
 
     @Column()
     customer_id: string;
@@ -85,16 +83,7 @@ export class Order {
         eager: true,
         cascade: true
     })
-    bill_details: OrderItem[]
-
-    total_details: number;
-
-    @AfterLoad()
-    updateTotalDetails() {
-        if (this.bill_details && this.bill_details.length > 0) {
-            this.total_details = this.bill_details.map(billDetail => billDetail.quantity * billDetail.unit_price).reduce((a, b) => a + b, 0);
-        }
-    }
+    items: OrderItem[]
 
     @Column({
         type: "enum",
@@ -108,13 +97,13 @@ export class Order {
     })
     bank: string
 
-    @ManyToMany(type => Voucher, voucherProfile => voucherProfile.used_on_bill, {
+    @ManyToMany(type => Voucher, voucherProfile => voucherProfile.applied_products, {
         cascade: true
     })
     @JoinTable({
-        name: "join_bill_voucher_profile",
+        name: "join_order_voucher_profile",
         joinColumn: {
-            name: "bill_id",
+            name: "order_id",
             referencedColumnName: "id"
         },
         inverseJoinColumn: {
@@ -122,7 +111,7 @@ export class Order {
             referencedColumnName: "code"
         }
     })
-    used_vouchers: Voucher[];
+    applied_vouchers: Voucher[];
 
 }
 
@@ -135,7 +124,7 @@ export class OrderItem {
     @PrimaryColumn()
     product_id: number;
 
-    @ManyToOne(() => Product, product => product.bill_details)
+    @ManyToOne(() => Product, product => product.items)
     @JoinColumn({name: "product_id"})
     product: Product;
 
@@ -149,7 +138,7 @@ export class OrderItem {
     })
     quantity: number;
 
-    @ManyToOne(type => Order, bill => bill.bill_details)
+    @ManyToOne(type => Order, bill => bill.items)
     @JoinColumn({
         name: "bill_id"
     })

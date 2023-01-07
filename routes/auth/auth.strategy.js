@@ -8,7 +8,6 @@ const JwtVariable = require('../../variables/jwt.variable');
 const routeVariable = require('../../variables/routes.variable');
 
 const { EmployeeRepository, AuthProperties, IdentifyProperties } = require('../../repositories/employee.repository');
-const { PermissionUtils } = require('../../utils/permission.utils');
 const { PositionRepository } = require('../../repositories/position.repository');
 
 const usernameField = 'username';
@@ -18,17 +17,7 @@ const findUser = async (username) => {
   const properties = [].concat(IdentifyProperties, AuthProperties);
   const user = await EmployeeRepository.findOneByUser(username, properties);
   if (user.position_records) {
-    const permissionArrays = await Promise.all(
-      user.position_records.flatMap(async (record) => {
-        const position = await PositionRepository.findOne({
-          where: {
-            id: record.position_id
-          }
-        });
-        return position ? position.permissions : [];
-      })
-    );
-    user.permissions = permissionArrays.flatMap(arr => arr).map(permission => PermissionUtils.toString(permission));
+
   }
   return user;
 };

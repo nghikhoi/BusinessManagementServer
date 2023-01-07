@@ -11,8 +11,8 @@ const randToken = require('rand-token');
 
 const routeVariable = require('../../variables/routes.variable');
 const { EmployeeRepository } = require('../../repositories/employee.repository');
-const {EmployeeController} = require("../../controllers/employee.controller");
 const {bodyFilter} = require('../../controllers/helper');
+const {EmployeesController} = require('../../controllers/employees.controller');
 
 const AppDataSource = require('../../config/database').AppDataSource;
 
@@ -67,7 +67,7 @@ router.get('/verify', verifyToken, (req, res) => {
     });
 });
 
-router.post('/signup', EmployeeController.register);
-router.post('/changepassword/:user_id?', EmployeeController.changePassword);
+router.post('/signup', EmployeesController.register);
+router.post('/changepassword/:user_id?', EmployeesController.changePassword);
 
 module.exports = router;

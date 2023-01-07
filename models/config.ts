@@ -4,12 +4,12 @@ import {Entity, PrimaryColumn} from "typeorm";
 export class BusinessConfig {
 
     @PrimaryColumn()
-    overtimeHourlyRate: number;
+    overtime_hourly_rate: number;
 
     @PrimaryColumn()
-    maxNumOfOvertimeHours: number;
+    max_num_of_overtime_hours: number;
 
     @PrimaryColumn()
-    VATRate: number;
+    vat_rate: number;
 
 }

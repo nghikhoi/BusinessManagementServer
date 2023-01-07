@@ -1,5 +1,5 @@
 import {VoucherType} from './voucher';
-import {Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm";
 import {Provider} from './provider';
 import {OrderItem} from './order';
 
@@ -15,8 +15,7 @@ export class ProductCategory {
     @Column()
     description: string;
 
-    @ManyToMany(type => Product, product => product.categories)
-    @JoinTable()
+    @OneToMany(type => Product, product => product.category)
     products: Product[];
 
 }
@@ -49,13 +48,17 @@ export class Product {
     // })
     // images: string[]; //TODO: find a way to store image urls
 
-    @ManyToMany(type => ProductCategory, category => category.products, {
+    @Column()
+    category_id: number;
+
+    @ManyToOne(type => ProductCategory, category => category.products, {
         eager: true
     })
-    categories: ProductCategory[];
+    @JoinColumn({name: "category_id"})
+    category: ProductCategory;
 
     @OneToMany(type => OrderItem, bill_detail => bill_detail.product)
-    bill_details: OrderItem[];
+    items: OrderItem[];
 
     @ManyToOne(type => Provider, provider => provider.products, {
         eager: true

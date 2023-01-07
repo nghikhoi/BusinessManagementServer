@@ -5,7 +5,7 @@ export class ProductCategoryStats {
 
     category: ProductCategory;
 
-    quantitySold: number;
+    quantity_sold: number;
 
 }
 
@@ -13,7 +13,7 @@ export class ProductStats {
 
     product: Product;
 
-    quantitySold: number;
+    quantity_sold: number;
 
     revenue: number;
 
@@ -23,7 +23,7 @@ export class CustomerStats {
 
     customer: Customer;
 
-    numOfOrders: number;
+    num_of_orders: number;
 
     revenue: number;
 
@@ -33,36 +33,36 @@ export class EmployeeStats {
 
     employee: Employee;
 
-    numOfOrders: number;
+    num_of_orders: number;
 
     revenue: number;
 
 }
 
 export class SalesStats {
-    
-    revenueByDay: number[];
 
-    totalRevenue: number;
+    revenue_by_day: number[];
 
-    avgRevenue: number;
+    total_revenue: number;
 
-    avgNumOfORdersPerEmployee: number;
+    avg_revenue: number;
 
-    numOfOrdersCompleted: number;
+    avg_num_of_orders_per_employee: number;
 
-    numOfOrdersCanceled: number;
+    num_of_orders_completed: number;
 
-    numOfOrdersReturned: number;
+    num_of_orders_canceled: number;
 
-    numOfOrdersMade: number;
+    num_of_orders_returned: number;
 
-    productCategroyStats: ProductCategoryStats[];
+    num_of_orders_made: number;
 
-    productStats: ProductStats[];
+    product_category_stats: ProductCategoryStats[];
 
-    customerStats: CustomerStats[];
+    product_stats: ProductStats[];
 
-    employeeStats: EmployeeStats[];
+    customer_stats: CustomerStats[];
+
+    employee_stats: EmployeeStats[];
 
 }

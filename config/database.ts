@@ -2,7 +2,6 @@ import { Product, ProductCategory } from './../models/product';
 import { Order, OrderItem } from '../models/order';
 import { Provider } from './../models/provider';
 import { Voucher, VoucherType } from './../models/voucher';
-import { Permission } from './../models/permission';
 import { Department } from './../models/department';
 import { Contract, ContractType } from './../models/contract';
 import { SalaryRecord, OvertimeRecord } from './../models/salary';

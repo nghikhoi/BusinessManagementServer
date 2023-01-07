@@ -85,7 +85,7 @@ export class Voucher {
     @JoinColumn({name: "type"})
     voucher_type: VoucherType;
 
-    @ManyToMany(type => Order, bill => bill.used_vouchers)
-    used_on_bill: Order[]
+    @ManyToMany(type => Order, bill => bill.applied_vouchers)
+    applied_products: Order[]
 
 }
