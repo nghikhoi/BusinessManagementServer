@@ -4,11 +4,11 @@ import {ContractRepository, ContractTypeRepository} from "../repositories/contra
 import {CustomerRepository} from "../repositories/customer.repository";
 import {DepartmentRepository} from "../repositories/department.repository";
 import {ImageRepository, VideoRepository} from "../repositories/file.repository";
-import {EmployeeRepository, SkillRepository} from "../repositories/employee.repository";
+import {EmployeeRepository, SkillRecordRepository} from "../repositories/employee.repository";
 import {PositionRepository} from "../repositories/position.repository";
 import {ProductCategoryRepository, ProductRepository} from "../repositories/product.repository";
 import {ProviderRepository} from "../repositories/provider.repository";
-import {SkillTypeRepository} from "../repositories/skill.repository";
+import {SkillRepository} from "../repositories/skill.repository";
 import {
     OvertimeRecordRepository,
     PositionRecordRepository,
@@ -27,7 +27,7 @@ export class CustomersController {
 
     static async getCustomer(req: Request, res: Response, next: NextFunction) {
         const id: string = req.params.id;
-        const result = await this.getCustomerById(id);
+        const result = await CustomersController.getCustomerById(id);
         return res.json(result);
     }
 
@@ -47,6 +47,9 @@ export class CustomersController {
 
     static async addCustomer(req: Request, res: Response, next: NextFunction) {
         const customer: any /*Customer*/ = req.body;
+
+        customer.id = undefined;
+
         const result = await CustomerRepository.save(customer);
         return res.json(result);
     }

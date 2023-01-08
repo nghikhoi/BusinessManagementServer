@@ -1,5 +1,15 @@
 import { Employee } from './employee';
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import {
+    Column,
+    DeleteDateColumn,
+    Entity,
+    JoinColumn,
+    ManyToOne,
+    OneToMany,
+    OneToOne,
+    PrimaryColumn,
+    PrimaryGeneratedColumn
+} from "typeorm";
 
 @Entity()
 export class Department {
@@ -15,13 +25,22 @@ export class Department {
     })
     description: string;
 
-    @Column()
+    @Column({
+        nullable: true
+    })
     phone_number: string;
 
-    @Column()
+    @Column({
+        nullable: true
+    })
     head_employee_id: string;
 
-    @OneToOne(type => Employee, employee => employee.department)
+    @DeleteDateColumn()
+    deleted_at: Date;
+
+    @ManyToOne(type => Employee, employee => employee.department, {
+        nullable: true
+    })
     @JoinColumn({ name: "head_employee_id" })
     head_employee: Employee;
 

@@ -4,11 +4,11 @@ import {ContractRepository, ContractTypeRepository} from "../repositories/contra
 import {CustomerRepository} from "../repositories/customer.repository";
 import {DepartmentRepository} from "../repositories/department.repository";
 import {ImageRepository, VideoRepository} from "../repositories/file.repository";
-import {EmployeeRepository, SkillRepository} from "../repositories/employee.repository";
+import {EmployeeRepository, SkillRecordRepository} from "../repositories/employee.repository";
 import {PositionRepository} from "../repositories/position.repository";
 import {ProductCategoryRepository, ProductRepository} from "../repositories/product.repository";
 import {ProviderRepository} from "../repositories/provider.repository";
-import {SkillTypeRepository} from "../repositories/skill.repository";
+import {SkillRepository} from "../repositories/skill.repository";
 import {
     OvertimeRecordRepository,
     PositionRecordRepository,
@@ -30,13 +30,36 @@ export class VoucherTypesController {
         const result = await VoucherTypeRepository.findOne({
             where: {
                 id: id
-            }
+            },
+            relations: ["require_product", "vouchers"]
         });
+
+        if (result) {
+            if (!result.require_product) {
+                result.require_product = [];
+            }
+            if (!result.vouchers) {
+                result.vouchers = [];
+            }
+        }
+
         return res.json(result);
     }
 
     static async getVoucherTypes(req: Request, res: Response, next: NextFunction) {
-        const result = await VoucherTypeRepository.find();
+        const result = await VoucherTypeRepository.find({
+            relations: ["require_product", "vouchers"]
+        });
+
+        result.forEach(voucherType => {
+            if (!voucherType.require_product) {
+                voucherType.require_product = [];
+            }
+            if (!voucherType.vouchers) {
+                voucherType.vouchers = [];
+            }
+        });
+
         return res.json(result);
     }
 

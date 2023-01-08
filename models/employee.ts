@@ -2,13 +2,13 @@ import {BonusRecord} from './bonus';
 import {Order} from './order';
 import {SalaryRecord, OvertimeRecord, OvertimeOverview} from './salary';
 import {Position, PositionRecord} from './position';
-import {SkillType} from './skill';
+import {Skill} from './skill';
 import {Contract} from './contract';
 import {
     AfterLoad,
     BeforeInsert,
     BeforeUpdate,
-    Column,
+    Column, DeleteDateColumn,
     Entity,
     JoinColumn,
     ManyToOne,
@@ -35,14 +35,14 @@ export class Employee {
     id: string;
 
     @Column({
-        nullable: false,
+        nullable: true,
         update: false,
         unique: true,
     })
     username: string;
 
     @Column({
-        nullable: false,
+        nullable: true,
         select: false,
     })
     password: string
@@ -81,11 +81,13 @@ export class Employee {
     })
     name: string;
 
-    @Column()
+    @Column({
+        nullable: true
+    })
     email: string;
 
     @Column({
-        unique: true
+        nullable: true
     })
     phone: string;
 
@@ -93,6 +95,11 @@ export class Employee {
         nullable: true
     })
     address: string;
+
+    @Column({
+        nullable: true
+    })
+    education: string;
 
     @Column({
         type: "enum",
@@ -108,15 +115,9 @@ export class Employee {
     birthday: Date
 
     @Column({
-        nullable: true,
-        unique: true
-    })
-    citizen_id: string;
-
-    @Column({
         nullable: true
     })
-    termination_date: Date;
+    citizen_id: string;
 
     @OneToMany(type => PositionRecord, position_records => position_records.employee)
     position_records: PositionRecord[];
@@ -127,17 +128,22 @@ export class Employee {
     @Column({
         nullable: true
     })
-    department_id: string;
+    department_id: number;
 
-    @ManyToOne(type => Department, department => department.employees)
+    @DeleteDateColumn()
+    deleted_at: Date;
+
+    @ManyToOne(type => Department, department => department.employees, {
+        nullable: true
+    })
     @JoinColumn({name: 'department_id'})
     department: Department;
 
-    @OneToMany(type => Skill, skill => skill.employee, {
+    @OneToMany(type => SkillRecord, skill => skill.employee, {
         cascade: true,
         eager: true
     })
-    skills: Skill[];
+    skills: SkillRecord[];
 
     @OneToMany(type => SalaryRecord, salary_record => salary_record.employee, {
         eager: true
@@ -159,18 +165,21 @@ export class Employee {
 
 export enum SkillLevel {
 
-    Unrated, Acceptable, Good, Excellent
+    Unrated = 'Unrated',
+    Acceptable = 'Acceptable',
+    Good = 'Good',
+    Excellent = 'Excellent'
 
 }
 
 @Entity()
-export class Skill {
+export class SkillRecord {
 
     @PrimaryColumn()
     employee_id: string;
 
     @PrimaryColumn()
-    skill_id: string;
+    skill_id: number;
 
     @Column({
         type: "enum",
@@ -186,10 +195,20 @@ export class Skill {
     @JoinColumn({name: "employee_id"})
     employee: Employee;
 
-    @ManyToOne(type => SkillType, skill => skill.employees, {
+    @ManyToOne(type => Skill, skill => skill.employees, {
         eager: true
     })
     @JoinColumn({name: "skill_id"})
-    skill: SkillType;
+    skill: Skill;
+
+}
+
+export class SkillOverview {
+
+    employee: Employee;
+
+    last_updated_time: Date;
+
+    skills: SkillRecord[];
 
 }

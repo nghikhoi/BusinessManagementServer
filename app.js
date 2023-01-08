@@ -11,7 +11,24 @@ const swaggerDocs = require("./utils/swagger");
 const {ImageRepository} = require("./repositories/file.repository");
 const path = require("path");
 const {Router} = require("express");
-const { AuthorityService } = require('./services/authority.service');
+
+function logErrors (err, req, res, next) {
+    console.error(err.stack)
+    next(err)
+}
+
+function clientErrorHandler (err, req, res, next) {
+    if (req.xhr) {
+        res.status(500).send({ error: 'Something failed!' })
+    } else {
+        next(err)
+    }
+}
+
+function errorHandler (err, req, res, next) {
+    res.status(500)
+    res.render('error', { error: err })
+}
 
 const RunApp = async () => {
     const app = express();
@@ -40,7 +57,6 @@ const RunApp = async () => {
 
     await AppDataSource.initialize();
     await InitSamples();
-    AuthorityService.default_permissions;
     //endregion
 
     //region Routes
@@ -72,6 +88,10 @@ const RunApp = async () => {
     app.use(express.static('public'));
     //endregion
 
+    app.use(logErrors)
+    app.use(clientErrorHandler)
+    app.use(errorHandler)
+
     swaggerDocs(app);
 
     //region Logging
@@ -81,14 +101,6 @@ const RunApp = async () => {
         const errors = new ErrorReporting();
         app.use(errors.express);
     }
-
-    /*app.get('/', (req, res) => {
-        res.json({
-            message: 'Welcome to the API',
-            status: 'OK'
-        });
-    });*/
-    //endregion
 
     app.listen(envVariables.PORT, () => {
         console.log(`Listening on port ${envVariables.PORT}`)

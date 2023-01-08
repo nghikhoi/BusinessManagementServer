@@ -12,7 +12,7 @@ export class ContractController {
 
     static async getContract(req: Request, res: Response, next: NextFunction) {
         const id = +req.params.id;
-        return res.json(await this.getContractById(id));
+        return res.json(await ContractController.getContractById(id));
     }
 
     static async getContractById(id: number) {

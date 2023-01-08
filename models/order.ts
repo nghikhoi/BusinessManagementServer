@@ -3,7 +3,7 @@ import { Product } from './product';
 import { Customer } from './customer';
 import {
     AfterLoad,
-    Column, CreateDateColumn,
+    Column, CreateDateColumn, DeleteDateColumn,
     Entity,
     JoinColumn,
     JoinTable,
@@ -52,23 +52,31 @@ export class Order {
     })
     completed_at: Date;
 
-    @Column()
-    vat_rate: number;
+    @Column({
+        nullable: true
+    })
+    vat_rate: number = 10;
 
     @Column()
     customer_id: string;
 
-    @Column()
+    @Column({
+        nullable: true
+    })
     address: string;
 
     @ManyToOne(type => Customer, customer => customer.bills)
     @JoinColumn({name: 'customer_id'})
     customer: Customer
 
-    @Column()
+    @Column({
+        nullable: true
+    })
     create_employee_id: string;
 
-    @ManyToOne(type => Employee, employee => employee.bills)
+    @ManyToOne(type => Employee, employee => employee.bills, {
+        nullable: true
+    })
     @JoinColumn({name: 'create_employee_id'})
     create_employee: Employee;
 
@@ -79,7 +87,7 @@ export class Order {
     })
     status: OrderStatus
 
-    @OneToMany(() => OrderItem, billDetail => billDetail.bill, {
+    @OneToMany(() => OrderItem, billDetail => billDetail.order, {
         eager: true,
         cascade: true
     })
@@ -96,6 +104,9 @@ export class Order {
         nullable: true
     })
     bank: string
+
+    @DeleteDateColumn()
+    deleted_at: Date;
 
     @ManyToMany(type => Voucher, voucherProfile => voucherProfile.applied_products, {
         cascade: true
@@ -138,10 +149,13 @@ export class OrderItem {
     })
     quantity: number;
 
+    @DeleteDateColumn()
+    deleted_at: Date;
+
     @ManyToOne(type => Order, bill => bill.items)
     @JoinColumn({
-        name: "bill_id"
+        name: "order_id"
     })
-    bill: Order
+    order: Order
 
 }

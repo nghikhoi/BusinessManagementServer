@@ -1,6 +1,6 @@
 const router = require('express').Router();
-const {SalaryRecordsController} = require('../../controllers/salaryrecords.controller');
+const {SalaryReportController} = require('../../controllers/salaryrecords.controller');
 
-router.get('/', SalaryRecordsController.getSalaryRecords);
+router.get('/:year/:month', SalaryReportController.getSalaryRecords);
 
 module.exports = router;

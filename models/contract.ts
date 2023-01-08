@@ -4,7 +4,7 @@ import {Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn, Primary
 @Entity()
 export class ContractType {
 
-    @PrimaryColumn()
+    @PrimaryGeneratedColumn()
     id: number;
 
     @Column()
@@ -32,7 +32,9 @@ export class Contract {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({
+        nullable: true
+    })
     name: string;
 
     @Column()
@@ -50,7 +52,7 @@ export class Contract {
     start_date: Date;
 
     @Column()
-    end_date: Date;
+    end_date: Date = new Date(5000, 1, 1);
 
     /*    @Column()
         is_current: boolean;*/ //TODO

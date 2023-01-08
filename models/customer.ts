@@ -1,6 +1,6 @@
 import { Gender } from './employee';
 import { Order } from './order';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import {Column, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn} from "typeorm";
 
 @Entity()
 export class Customer {
@@ -11,11 +11,13 @@ export class Customer {
     @Column()
     name: string;
 
-    @Column()
+    @Column({
+        nullable: true
+    })
     email: string;
 
     @Column({
-        unique: true
+        nullable: true
     })
     phone: string;
 
@@ -28,16 +30,22 @@ export class Customer {
     gender: Gender
 
     @Column({
-        nullable: true,
-        unique: true
+        nullable: true
     })
     citizen_id: string;
 
-    @Column()
+    @Column({
+        nullable: true
+    })
     address: string;
 
-    @Column()
-    birthday: Date;
+    @Column({
+        nullable: true
+    })
+    birthday: Date = new Date();
+
+    @DeleteDateColumn()
+    deleted_at: Date;
 
     @OneToMany(type => Order, bill => bill.customer)
     bills: Order[];

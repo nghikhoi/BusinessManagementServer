@@ -4,11 +4,11 @@ import {ContractRepository, ContractTypeRepository} from "../repositories/contra
 import {CustomerRepository} from "../repositories/customer.repository";
 import {DepartmentRepository} from "../repositories/department.repository";
 import {ImageRepository, VideoRepository} from "../repositories/file.repository";
-import {EmployeeRepository, SkillRepository} from "../repositories/employee.repository";
+import {EmployeeRepository, SkillRecordRepository} from "../repositories/employee.repository";
 import {PositionRepository} from "../repositories/position.repository";
 import {ProductCategoryRepository, ProductRepository} from "../repositories/product.repository";
 import {ProviderRepository} from "../repositories/provider.repository";
-import {SkillTypeRepository} from "../repositories/skill.repository";
+import {SkillRepository} from "../repositories/skill.repository";
 import {
     OvertimeRecordRepository,
     PositionRecordRepository,
@@ -32,19 +32,44 @@ export class BonusRecordsController {
 		return res.json(result);
 	}
 
+	static async getBonusRecordOfEmployee(employee_id: string, year: number, month: number) {
+		const result = await BonusRecordRepository.find({
+			where: {
+				employee_id: employee_id,
+				year: year,
+				month: month
+			},
+			relations: ["employee", "bonus_type"]
+		});
+		return result;
+	}
+
 	static async updateBonusRecords(req: Request, res: Response, next: NextFunction) {
 		const year: number = +req.params.year;
 		const month: number = +req.params.month;
 		const records: any[] = req.body;
-		const result = Promise.all(records.map(async (record) => {
+		const temp = await Promise.all(records.map(async (record) => {
 			return await BonusRecordRepository.save({
 				employee_id: record.employee.id,
 				year: year,
 				month: month,
-				bonus_type_id: record.type.id,
+				bonus_type_id: record.bonus_type.id,
 				amount: record.amount
 			});
 		}));
+
+		let result = [];
+		if (temp && temp.length > 0) {
+			result = await BonusRecordRepository.find({
+				where: {
+					year: year,
+					month: month,
+					employee_id: temp[0].employee_id
+				},
+				relations: ["employee", "bonus_type"]
+			});
+		}
+
 		return res.json(result);
 	}
 

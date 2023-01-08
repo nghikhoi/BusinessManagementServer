@@ -1,7 +1,7 @@
 import { Product } from './product';
 import {
     ChildEntity,
-    Column,
+    Column, DeleteDateColumn,
     Entity,
     JoinColumn, JoinTable, ManyToMany,
     ManyToOne,
@@ -61,6 +61,9 @@ export class VoucherType {
     })
     require_min_net: number;
 
+    @DeleteDateColumn()
+    deleted_at: Date;
+
     @OneToMany(type => Voucher, voucher => voucher.voucher_type)
     vouchers: Voucher[];
 
@@ -80,6 +83,9 @@ export class Voucher {
 
     @Column()
     expire_date: Date;
+
+    @DeleteDateColumn()
+    deleted_at: Date;
 
     @ManyToOne(type => VoucherType, voucherType => voucherType.vouchers)
     @JoinColumn({name: "type"})

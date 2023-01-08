@@ -4,11 +4,11 @@ import {ContractRepository, ContractTypeRepository} from "../repositories/contra
 import {CustomerRepository} from "../repositories/customer.repository";
 import {DepartmentRepository} from "../repositories/department.repository";
 import {ImageRepository, VideoRepository} from "../repositories/file.repository";
-import {EmployeeRepository, SkillRepository} from "../repositories/employee.repository";
+import {EmployeeRepository, SkillRecordRepository} from "../repositories/employee.repository";
 import {PositionRepository} from "../repositories/position.repository";
 import {ProductCategoryRepository, ProductRepository} from "../repositories/product.repository";
 import {ProviderRepository} from "../repositories/provider.repository";
-import {SkillTypeRepository} from "../repositories/skill.repository";
+import {SkillRepository} from "../repositories/skill.repository";
 import {
     OvertimeRecordRepository,
     PositionRecordRepository,

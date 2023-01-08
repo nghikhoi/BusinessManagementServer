@@ -1,10 +1,19 @@
-import {Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn} from 'typeorm';
+import {
+    Column,
+    DeleteDateColumn,
+    Entity,
+    JoinColumn,
+    ManyToOne,
+    OneToMany,
+    PrimaryColumn,
+    PrimaryGeneratedColumn
+} from 'typeorm';
 import { Employee } from './employee';
 
 @Entity()
 export class BonusType {
 
-    @PrimaryColumn()
+    @PrimaryGeneratedColumn()
     id: number;
 
     @Column()
@@ -15,6 +24,9 @@ export class BonusType {
 
     @Column()
     amount: number;
+
+    @DeleteDateColumn()
+    deleted_at: Date;
 
     @OneToMany(type => BonusRecord, bonus_record => bonus_record.bonus_type)
     @JoinColumn({ name: "id" })

@@ -1,14 +1,14 @@
-import { Product, ProductCategory } from './../models/product';
+import { Product, ProductCategory } from '../models/product';
 import { Order, OrderItem } from '../models/order';
-import { Provider } from './../models/provider';
-import { Voucher, VoucherType } from './../models/voucher';
-import { Department } from './../models/department';
-import { Contract, ContractType } from './../models/contract';
-import { SalaryRecord, OvertimeRecord } from './../models/salary';
-import { SkillType } from './../models/skill';
-import { Position, PositionRecord } from './../models/position';
-import { Customer } from './../models/customer';
-import { Employee, Skill } from './../models/employee';
+import { Provider } from '../models/provider';
+import { Voucher, VoucherType } from '../models/voucher';
+import { Department } from '../models/department';
+import { Contract, ContractType } from '../models/contract';
+import { SalaryRecord, OvertimeRecord } from '../models/salary';
+import { Skill } from '../models/skill';
+import { Position, PositionRecord } from '../models/position';
+import { Customer } from '../models/customer';
+import { Employee, SkillRecord } from '../models/employee';
 import "reflect-metadata"
 import {DataSource, DefaultNamingStrategy, NamingStrategyInterface, Table} from "typeorm"
 import {
@@ -102,7 +102,7 @@ if (DATABASE_SOCKET_PATH) {
 export const EntitySchemas = [
     BusinessConfig,
     Position,
-    SkillType,
+    Skill,
     ContractType,
     Contract,
     BonusType,
@@ -117,7 +117,7 @@ export const EntitySchemas = [
 
     PositionRecord,
     Employee,
-    Skill,
+    SkillRecord,
     BonusRecord,
     OvertimeRecord,
     SalaryRecord,

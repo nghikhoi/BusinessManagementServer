@@ -24,7 +24,15 @@ export const OrderRepository = AppDataSource.getRepository(Order).extend({
     createQuery(): SelectQueryBuilder<Order> {
         let query: SelectQueryBuilder<Order> = this.createQueryBuilder("order");
 
-        //Join with order item
+        query = query.leftJoinAndSelect("order.items", "items")
+            .leftJoinAndSelect("items.product", "product")
+            .leftJoinAndSelect("order.customer", "customer")
+            .leftJoinAndSelect("order.create_employee", "create_employee")
+            .leftJoinAndSelect("order.applied_vouchers", "applied_vouchers")
+            .leftJoinAndSelect("applied_vouchers.voucher_type", "voucher_type")
+            .leftJoinAndSelect("voucher_type.require_product", "require_product");
+
+/*        //Join with order item
         query = query.leftJoinAndSelect("order.items", "order_items");
 
         //Join with product of item
@@ -37,7 +45,7 @@ export const OrderRepository = AppDataSource.getRepository(Order).extend({
         query = query.leftJoinAndSelect("order.used_vouchers", "used_vouchers");
 
         //Join with voucher type
-        query = query.leftJoinAndSelect("used_vouchers.voucher_type", "voucher_type");
+        query = query.leftJoinAndSelect("used_vouchers.voucher_type", "voucher_type");*/
 
         return query;
     }

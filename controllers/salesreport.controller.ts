@@ -1,9 +1,9 @@
 import {NextFunction, Request, Response} from "express";
-import {CustomerStats, EmployeeStats, ProductCategoryStats, SalesStats} from "../models/sale_reports";
+import {CustomerStats, EmployeeStats, ProductCategoryStats, ProductStats, SalesStats} from "../models/sale_reports";
 import {OrdersController} from "./orders.controller";
 import {OrderStatus} from "../models/order";
 import {ProductCategory} from "../models/product";
-import {ProductCategoryRepository} from "../repositories/product.repository";
+import {ProductCategoryRepository, ProductRepository} from "../repositories/product.repository";
 import {CustomersController} from "./customers.controller";
 import {EmployeesController} from "./employees.controller";
 
@@ -27,7 +27,7 @@ export class SalesReportController {
                 orderGroupByDay[day].push(order);
             });
             result.revenue_by_day = orderGroupByDay.map(orders => {
-                if (orders === undefined) {
+                if (orders === undefined || !orders) {
                     return 0;
                 }
                 let total = 0;
@@ -36,6 +36,12 @@ export class SalesReportController {
                 });
                 return total;
             });
+
+            for (let i = 0; i < result.revenue_by_day.length; i++) {
+                if (result.revenue_by_day[i] === undefined || !result.revenue_by_day[i]) {
+                    result.revenue_by_day[i] = 0;
+                }
+            }
         }
 
         result.total_revenue = 0;
@@ -97,6 +103,29 @@ export class SalesReportController {
         }
 
         {
+            const product_stats = (await ProductRepository.find()).map(product => {
+                const stats = new ProductStats();
+                stats.product = product;
+                stats.quantity_sold = 0;
+                stats.revenue = 0;
+                return stats;
+            })
+
+            monthOrders.forEach(order => {
+                if (order.status != OrderStatus.COMPLETED) {
+                    return;
+                }
+                order.items.forEach(item => {
+                    const product = product_stats.find(product => product.product.id === item.product_id);
+                    product.quantity_sold += item.quantity;
+                    product.revenue += item.quantity * item.product.price;
+                });
+            });
+
+            result.product_stats = product_stats;
+        }
+
+        {
             const distinctCustomerIds = monthOrders.map(order => order.customer_id)
                 .filter((value, index, self) => self.indexOf(value) === index);
             const distinctCustomers = (await Promise.all(distinctCustomerIds.map(id => CustomersController.getCustomerById(id))))
@@ -150,7 +179,7 @@ export class SalesReportController {
     static async getSalesReport(req: Request, res: Response, next: NextFunction) {
         const year: number = +req.params.year;
         const month: number = +req.params.month;
-        const result = await this.getSalesReportBy(month, year);
+        const result = await SalesReportController.getSalesReportBy(month, year);
         return res.json(result);
     }
 

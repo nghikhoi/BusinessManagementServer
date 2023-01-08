@@ -8,19 +8,10 @@ export class OvertimeRecord {
     employee_id: string;
 
     @PrimaryColumn()
-    day: number;
-
-    @PrimaryColumn()
-    month: number;
-
-    @PrimaryColumn()
-    year: number;
+    date: Date;
 
     @Column()
-    from: Date;
-
-    @Column()
-    to: Date;
+    hours: number;
 
     @ManyToOne(type => Employee, employee => employee.overtime_records)
     @JoinColumn({ name: "employee_id" })
@@ -30,11 +21,7 @@ export class OvertimeRecord {
 
 export class OvertimeOverview { //TODO
 
-    employee_id: string;
-
-    month: number;
-
-    year: number;
+    month_year: Date;
 
     num_of_overtime_days: number;
 
@@ -44,7 +31,7 @@ export class OvertimeOverview { //TODO
 
     employee: Employee;
 
-    overtime_records: OvertimeRecord[];
+    records: OvertimeRecord[];
 
 }
 

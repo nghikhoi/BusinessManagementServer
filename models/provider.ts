@@ -26,6 +26,6 @@ export class Provider {
     avatar_url: string
 
     @CreateDateColumn()
-    createdAt: Date
+    created_at: Date
 
 }

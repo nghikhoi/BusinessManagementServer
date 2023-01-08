@@ -1,38 +1,13 @@
 import {NextFunction, Request, Response} from "express";
-import {OrderItemRepository} from "../repositories/bill.repository";
-import {ContractRepository, ContractTypeRepository} from "../repositories/contract.repository";
-import {CustomerRepository} from "../repositories/customer.repository";
-import {DepartmentRepository} from "../repositories/department.repository";
-import {ImageRepository, VideoRepository} from "../repositories/file.repository";
-import {EmployeeRepository, SkillRepository} from "../repositories/employee.repository";
-import {PositionRepository} from "../repositories/position.repository";
-import {ProductCategoryRepository, ProductRepository} from "../repositories/product.repository";
-import {ProviderRepository} from "../repositories/provider.repository";
-import {SkillTypeRepository} from "../repositories/skill.repository";
-import {
-    OvertimeRecordRepository,
-    PositionRecordRepository,
-    SalaryRecordRepository
-} from "../repositories/salary.repository";
-import {VoucherRepository, VoucherTypeRepository} from "../repositories/voucher.repository";
-import {BonusRecordRepository, BonusTypeRepository} from "../repositories/bonus.repository";
+import {EmployeeRepository, SkillRecordRepository} from "../repositories/employee.repository";
+import {SkillRepository} from "../repositories/skill.repository";
 import {EmployeesController} from "./employees.controller";
-import {Employee, Skill} from "../models/employee";
-
-export class SkillOverview {
-
-    employee: Employee;
-
-    last_updated_time: Date;
-
-    skills: Skill[];
-
-}
+import {Employee, SkillRecord, SkillLevel, SkillOverview} from "../models/employee";
 
 export class SkillRecordsController {
 
     static async getSkillOverview(employee_id: string) {
-        const skills = await SkillRepository.find({
+        const records = await SkillRecordRepository.find({
             where: {
                 employee_id: employee_id
             },
@@ -41,52 +16,71 @@ export class SkillRecordsController {
 
         const skillOverview = new SkillOverview();
         skillOverview.employee = await EmployeesController.getEmployeeById(employee_id);
-        skillOverview.skills = skills;
-        skillOverview.last_updated_time = skills[0].updated_at;
+        skillOverview.skills = records;
+        skillOverview.last_updated_time = records && records.length > 0 ? records[0].updated_at : new Date();
 
         return skillOverview;
     }
 
     static async getSkillOverviews(req: Request, res: Response, next: NextFunction) {
-        const skills = await SkillRepository.find({
-            relations: ["skill"]
-        });
+        const employeeIds = await EmployeeRepository.find({select: ['id']});
 
-        const skillOverviews: SkillOverview[] = [];
+        const result = await Promise.all(employeeIds.map(async (employeeId) => {
+            return await SkillRecordsController.getSkillOverviewDetails(employeeId.id);
+        }));
 
-        for (const skill of skills) {
-            const skillOverview = skillOverviews.find((overview) => overview.employee.id === skill.employee_id);
-            if (skillOverview) {
-                skillOverview.skills.push(skill);
-                skillOverview.last_updated_time = skill.updated_at > skillOverview.last_updated_time ? skill.updated_at : skillOverview.last_updated_time;
-            } else {
-                const employee = await EmployeesController.getEmployeeById(skill.employee_id);
-                skillOverviews.push({
-                    employee: employee,
-                    last_updated_time: skill.updated_at,
-                    skills: [skill]
-                });
-            }
-        }
-
-        return res.json(skillOverviews);
+        return res.json(result);
     }
 
     static async getSkillDetails(req: Request, res: Response, next: NextFunction) {
         const employeeId: string = req.params.id;
-        return res.json(await this.getSkillOverview(employeeId));
+        const skills = await SkillRecordsController.getSkillOverviewDetails(employeeId);
+
+        return res.json(skills);
+    }
+
+    private static async getSkillOverviewDetails(employeeId: string) {
+        const employee = await EmployeesController.getEmployeeById(employeeId);
+
+        const types = await SkillRepository.find();
+        const skills = await SkillRecordsController.getSkillOverview(employeeId);
+
+        types.forEach((type) => {
+            if (!skills.skills.find((skill) => skill.skill.id === type.id)) {
+                skills.skills.push({
+                    skill: type,
+                    skill_id: type.id,
+                    updated_at: new Date(),
+                    level: SkillLevel.Unrated,
+                    employee_id: employeeId,
+                    employee: employee
+                });
+            }
+        });
+        return skills;
     }
 
     static async updateSkills(req: Request, res: Response, next: NextFunction) {
         const employeeId: string = req.params.id;
-        const skills: any[] /*List<SkillRecord>*/ = req.body;
-        const result = Promise.all(skills.map(async (skill) => {
-            await SkillRepository.save({
+        const records: any[] /*List<SkillRecord>*/ = req.body;
+        const result = await Promise.all(records.map(async (record) => {
+            const oldRecord = await SkillRecordRepository.findOneBy({
                 employee_id: employeeId,
-                skill_type_id: skill.skill_type.id,
-                level: skill.level
+                skill_id: record.skill.id
             });
-        })); //TODO
+
+            if (oldRecord) {
+                oldRecord.level = record.level;
+                return await SkillRecordRepository.save(oldRecord);
+            } else {
+                const newRecord = SkillRecordRepository.create({
+                    employee_id: employeeId,
+                    skill_id: record.skill.id,
+                    level: record.level
+                });
+                return await SkillRecordRepository.save(newRecord);
+            }
+        }));
         return res.json(result);
     }
 

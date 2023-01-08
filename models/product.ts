@@ -1,5 +1,15 @@
 import {VoucherType} from './voucher';
-import {Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm";
+import {
+    Column,
+    DeleteDateColumn,
+    Entity,
+    JoinColumn,
+    JoinTable,
+    ManyToMany,
+    ManyToOne,
+    OneToMany,
+    PrimaryGeneratedColumn
+} from "typeorm";
 import {Provider} from './provider';
 import {OrderItem} from './order';
 
@@ -14,6 +24,9 @@ export class ProductCategory {
 
     @Column()
     description: string;
+
+    @DeleteDateColumn()
+    deleted_at: Date;
 
     @OneToMany(type => Product, product => product.category)
     products: Product[];
@@ -35,24 +48,30 @@ export class Product {
     description: string;
 
     @Column()
-    unit: string;
+    unit: string = "Cái";
 
     @Column()
-    price: number;
+    price: number = 9999;
 
     @Column()
-    stock: number;
+    stock: number = 0;
 
     // @Column({
     //     nullable: true
     // })
     // images: string[]; //TODO: find a way to store image urls
 
-    @Column()
+    @Column({
+        nullable: true
+    })
     category_id: number;
 
+    @DeleteDateColumn()
+    deleted_at: Date;
+
     @ManyToOne(type => ProductCategory, category => category.products, {
-        eager: true
+        eager: true,
+        nullable: true
     })
     @JoinColumn({name: "category_id"})
     category: ProductCategory;
@@ -61,7 +80,8 @@ export class Product {
     items: OrderItem[];
 
     @ManyToOne(type => Provider, provider => provider.products, {
-        eager: true
+        eager: true,
+        nullable: true
     })
     provider: Provider;
 

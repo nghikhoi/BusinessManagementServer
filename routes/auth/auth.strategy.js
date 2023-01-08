@@ -16,9 +16,6 @@ const passwordField = 'password';
 const findUser = async (username) => {
   const properties = [].concat(IdentifyProperties, AuthProperties);
   const user = await EmployeeRepository.findOneByUser(username, properties);
-  if (user.position_records) {
-
-  }
   return user;
 };
 

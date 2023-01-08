@@ -1,5 +1,5 @@
 import {Position, PositionRecord} from './../models/position';
-import {Employee, Skill} from './../models/employee';
+import {Employee, SkillRecord} from './../models/employee';
 import {AppDataSource} from "../config/database";
 import {SelectQueryBuilder} from "typeorm";
 import Fuse from "fuse.js";
@@ -61,17 +61,24 @@ export const EmployeeRepository = AppDataSource.getRepository(Employee).extend({
     createQuery(): SelectQueryBuilder<Employee> {
         let query: SelectQueryBuilder<Employee> = this.createQueryBuilder("employee");
 
-        //Join with position record
-        query = query.leftJoinAndMapMany('employee.position_records', PositionRecord, 'record', 'record.employee_id = employee.id')
+        query = query.leftJoinAndSelect("employee.position_records", "position_records")
+            .leftJoinAndSelect("position_records.position", "position")
+            .leftJoinAndSelect("employee.contracts", "contracts")
+            .leftJoinAndSelect("contracts.type", "type");
+
+        /*//Join with position record
+        query = query.leftJoinAndMapMany('employee.position_records', PositionRecord, 'employee.position_records', 'employee.position_records.employee_id = employee.id')
 
         //Join with position
-        query = query.leftJoinAndMapOne('record.position', Position, 'position', 'position.id = record.position_id')
+        query = query.leftJoinAndMapMany('employee.position_records.position'
+            , Position, 'employee.position_records.position'
+            , 'employee.position_records.position.id = employee.position_records.position_id')
 
         //Join with contract list
-        query = query.leftJoinAndMapMany('employee.contracts', Contract, 'contract', 'contract.employee_id = employee.id')
+        query = query.leftJoinAndMapMany('employee.contracts', Contract, 'employee.contracts', 'employee.contracts.employee_id = employee.id')
 
         //Join with contract type
-        query = query.leftJoinAndMapOne('contract.contract_type', ContractType, 'contract_type', 'contract_type.id = contract.contract_type_id')
+        query = query.leftJoinAndMapMany('employee.contracts.type', ContractType, 'employee.contracts.type', 'employee.contracts.type.id = employee.contracts.type_id')*/
 
         return query;
     },
@@ -89,12 +96,11 @@ export const EmployeeRepository = AppDataSource.getRepository(Employee).extend({
         if (select) {
             query = query.select(select.map(item => "employee." + item));
         }
-        return query.leftJoinAndMapMany('employee.position_records', PositionRecord, 'record', 'record.employee_id = employee.id')
-            .getOne();
+        return query.getOne();
     },
     findWithRelations(): Promise<Employee[] | null> {
         return this.createQuery().getMany();
     }
 })
 
-export const SkillRepository = AppDataSource.getRepository(Skill);
+export const SkillRecordRepository = AppDataSource.getRepository(SkillRecord);

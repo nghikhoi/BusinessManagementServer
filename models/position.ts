@@ -1,6 +1,6 @@
 import {Employee} from './employee';
 import {
-    Column,
+    Column, DeleteDateColumn,
     Entity,
     JoinColumn,
     JoinTable,
@@ -27,7 +27,7 @@ export class Position {
     description: string;
 
     @Column()
-    supplement_salary: number;
+    supplement_salary: number = 0;
 
     @Column()
     can_view_orders: boolean = false;
@@ -59,6 +59,9 @@ export class Position {
     @Column()
     can_manage_config: boolean = false;
 
+    @DeleteDateColumn()
+    deleted_at: Date;
+
     @OneToMany(type => PositionRecord, positionRecord => positionRecord.position)
     position_records: PositionRecord[];
 
@@ -79,9 +82,10 @@ export class PositionRecord {
     @Column()
     position_id: number;
 
-    is_current: boolean; //TODO
-
-    @ManyToOne(type => Position, position => position.position_records)
+    @ManyToOne(type => Position, position => position.position_records, {
+        eager: true
+    })
+    @JoinColumn({name: 'position_id'})
     position: Position;
 
     @ManyToOne(type => Employee, employee => employee.position_records)
