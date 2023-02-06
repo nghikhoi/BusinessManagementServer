@@ -11,9 +11,7 @@ export class OverviewController {
 	static async getOverview(req: Request, res: Response, next: NextFunction) {
 		const result = {};
 
-		const pendingOrders = await OrderRepository.createQuery()
-			.where("status = :status", {status: "pending"})
-			.getMany();
+		const pendingOrders = await OrdersController.getOrdersByStatus(OrderStatus.PENDING);
 
 		await Promise.all(pendingOrders.map(async (order) => {
 			order.create_employee = await EmployeesController.getEmployeeById(order.create_employee_id);

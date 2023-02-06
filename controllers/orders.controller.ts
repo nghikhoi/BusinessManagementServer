@@ -64,6 +64,18 @@ export class OrdersController {
         return result;
     }
 
+    static async getOrdersByStatus(status: OrderStatus) {
+        const result = await OrderRepository.createQuery()
+            .where('order.status = :status', {status})
+            .getMany();
+
+        await Promise.all(result.map(async (order) => {
+            await OrdersController.postOrder(order);
+        }));
+
+        return result;
+    }
+
     static async getOrder(req: Request, res: Response, next: NextFunction) {
         const id: number = +req.params.id;
         const result = await OrderRepository.createQuery().where('order.id = :id', {id}).getOne();
